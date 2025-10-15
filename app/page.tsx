@@ -40,7 +40,7 @@ const tools = [
   { name: "counter_increment", description: "Widget-accessible server-side counter" },
   { name: "get_weather", description: "Mock weather data with toolResponseMetadata" },
   { name: "search_items", description: "Search mock database with structured content" },
-  { name: "show_content", description: "Original demo tool with widget rendering" },
+  { name: "show_apps_sdk_dashboard", description: "Original demo tool with widget rendering" },
 ];
 
 export default function Home() {

@@ -32,13 +32,13 @@ const handler = createMcpHandler(async (server) => {
   const html = await getAppsSdkCompatibleHtml(baseURL, "/");
 
   const contentWidget: ContentWidget = {
-    id: "show_content",
-    title: "Show Content",
+    id: "show_apps_sdk_dashboard",
+    title: "Show Apps SDK Dashboard",
     templateUri: "ui://widget/content-template.html",
     invoking: "Loading content...",
     invoked: "Content loaded",
     html: html,
-    description: "Displays the homepage content",
+    description: "Displays the Apps SDK Dashboard",
     widgetDomain: "https://nextjs.org/docs",
   };
   server.registerResource(
