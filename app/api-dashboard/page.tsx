@@ -15,10 +15,6 @@ import {
   useIsChatGptApp,
 } from "../hooks";
 
-interface DemoState extends Record<string, unknown> {
-  counter: number;
-  lastUpdated: string;
-}
 
 function PropertyCard({
   title,
@@ -88,34 +84,7 @@ export default function ApiDashboard() {
   const toolResponseMetadata = useToolResponseMetadata();
   const isChatGptApp = useIsChatGptApp();
 
-  const [state, setState] = useWidgetState<DemoState>({
-    counter: 0,
-    lastUpdated: new Date().toISOString(),
-  });
-
-  const incrementCounter = () => {
-    setState((prev) => ({
-      ...prev!,
-      counter: prev!.counter + 1,
-      lastUpdated: new Date().toISOString(),
-    }));
-  };
-
-  const decrementCounter = () => {
-    setState((prev) => ({
-      ...prev!,
-      counter: prev!.counter - 1,
-      lastUpdated: new Date().toISOString(),
-    }));
-  };
-
-  const resetCounter = () => {
-    setState((prev) => ({
-      ...prev!,
-      counter: 0,
-      lastUpdated: new Date().toISOString(),
-    }));
-  };
+  const [widgetState] = useWidgetState(); // Just read, don't initialize with default
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -254,44 +223,11 @@ export default function ApiDashboard() {
         <div className="md:col-span-2">
           <PropertyCard title="Widget State (widgetState)">
             <div className="space-y-4">
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                  Interactive State Demo
-                </h4>
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="text-5xl font-bold text-blue-600 dark:text-blue-400">
-                    {state?.counter ?? 0}
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={decrementCounter}
-                      className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-medium transition-colors"
-                    >
-                      − Decrement
-                    </button>
-                    <button
-                      onClick={resetCounter}
-                      className="px-3 py-1.5 bg-slate-500 hover:bg-slate-600 text-white rounded text-sm font-medium transition-colors"
-                    >
-                      Reset
-                    </button>
-                    <button
-                      onClick={incrementCounter}
-                      className="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded text-sm font-medium transition-colors"
-                    >
-                      + Increment
-                    </button>
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
-                    State persists across widget lifecycles and is visible to the AI model
-                  </p>
-                </div>
-              </div>
               <div>
                 <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
                   Current State JSON:
                 </p>
-                <JsonValue data={state} />
+                <JsonValue data={widgetState} />
               </div>
             </div>
           </PropertyCard>
