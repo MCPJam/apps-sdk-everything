@@ -96,6 +96,204 @@ const handler = createMcpHandler(async (server) => {
       };
     }
   );
+
+  // Tool 1: get_time - Simple read-only tool
+  server.registerTool(
+    "get_time",
+    {
+      title: "Get Current Time",
+      description: "Returns the current server time in ISO format",
+      inputSchema: {},
+    },
+    async () => {
+      const now = new Date();
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Current time: ${now.toISOString()}`,
+          },
+        ],
+        structuredContent: {
+          timestamp: now.toISOString(),
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          unixTimestamp: now.getTime(),
+        },
+      };
+    }
+  );
+
+  // Tool 2: calculator - Takes input and performs calculations
+  server.registerTool(
+    "calculator",
+    {
+      title: "Calculator",
+      description: "Performs basic mathematical calculations",
+      inputSchema: {
+        operation: z.enum(["add", "subtract", "multiply", "divide"]).describe("The operation to perform"),
+        a: z.number().describe("First number"),
+        b: z.number().describe("Second number"),
+      },
+    },
+    async ({ operation, a, b }) => {
+      let result: number;
+      switch (operation) {
+        case "add":
+          result = a + b;
+          break;
+        case "subtract":
+          result = a - b;
+          break;
+        case "multiply":
+          result = a * b;
+          break;
+        case "divide":
+          if (b === 0) {
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: "Error: Division by zero",
+                },
+              ],
+              isError: true,
+            };
+          }
+          result = a / b;
+          break;
+      }
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `${a} ${operation} ${b} = ${result}`,
+          },
+        ],
+        structuredContent: {
+          operation,
+          operands: { a, b },
+          result,
+        },
+      };
+    }
+  );
+
+  // Tool 3: counter_increment - Widget accessible tool (can be called from component)
+  let counter = 0;
+  server.registerTool(
+    "counter_increment",
+    {
+      title: "Increment Counter",
+      description: "Increments a server-side counter (widget accessible)",
+      inputSchema: {
+        amount: z.number().optional().describe("Amount to increment by (default: 1)"),
+      },
+      _meta: {
+        "openai/widgetAccessible": true,
+      },
+    },
+    async ({ amount = 1 }) => {
+      counter += amount;
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Counter incremented by ${amount}. New value: ${counter}`,
+          },
+        ],
+        structuredContent: {
+          counter,
+          incrementAmount: amount,
+          timestamp: new Date().toISOString(),
+        },
+      };
+    }
+  );
+
+  // Tool 4: get_weather - Demonstrates toolResponseMetadata
+  server.registerTool(
+    "get_weather",
+    {
+      title: "Get Weather",
+      description: "Returns mock weather data for a location",
+      inputSchema: {
+        location: z.string().describe("City name or location"),
+      },
+    },
+    async ({ location }) => {
+      const weatherConditions = ["sunny", "cloudy", "rainy", "snowy", "windy"];
+      const randomCondition = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+      const temperature = Math.floor(Math.random() * 40) - 5; // -5 to 35°C
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Weather in ${location}: ${randomCondition}, ${temperature}°C`,
+          },
+        ],
+        structuredContent: {
+          location,
+          condition: randomCondition,
+          temperature,
+          humidity: Math.floor(Math.random() * 100),
+          windSpeed: Math.floor(Math.random() * 50),
+        },
+        _meta: {
+          "custom/dataSource": "mock-weather-api",
+          "custom/cached": false,
+          "custom/timestamp": new Date().toISOString(),
+        },
+      };
+    }
+  );
+
+  // Tool 5: search_items - Demonstrates structured content
+  server.registerTool(
+    "search_items",
+    {
+      title: "Search Items",
+      description: "Search through a mock database of items",
+      inputSchema: {
+        query: z.string().describe("Search query"),
+        limit: z.number().optional().describe("Maximum number of results (default: 5)"),
+      },
+    },
+    async ({ query, limit = 5 }) => {
+      const mockItems = [
+        { id: 1, name: "Laptop", category: "Electronics", price: 999 },
+        { id: 2, name: "Mouse", category: "Electronics", price: 29 },
+        { id: 3, name: "Keyboard", category: "Electronics", price: 79 },
+        { id: 4, name: "Desk Chair", category: "Furniture", price: 299 },
+        { id: 5, name: "Monitor", category: "Electronics", price: 399 },
+        { id: 6, name: "Headphones", category: "Electronics", price: 149 },
+        { id: 7, name: "Desk Lamp", category: "Furniture", price: 49 },
+        { id: 8, name: "Notebook", category: "Stationery", price: 5 },
+      ];
+
+      const results = mockItems
+        .filter((item) =>
+          item.name.toLowerCase().includes(query.toLowerCase()) ||
+          item.category.toLowerCase().includes(query.toLowerCase())
+        )
+        .slice(0, limit);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Found ${results.length} items matching "${query}"`,
+          },
+        ],
+        structuredContent: {
+          query,
+          totalResults: results.length,
+          items: results,
+        },
+      };
+    }
+  );
 });
 
 export const GET = handler;

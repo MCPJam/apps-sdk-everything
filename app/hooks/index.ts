@@ -10,10 +10,20 @@ export { useWidgetProps } from "./use-widget-props";
 export { useWidgetState } from "./use-widget-state";
 export { useOpenAIGlobal } from "./use-openai-global";
 
-// Additional hooks
+// OpenAI property hooks
+export { useTheme } from "./use-theme";
+export { useLocale } from "./use-locale";
+export { useUserAgent } from "./use-user-agent";
+export { useSafeArea } from "./use-safe-area";
+export { useToolInput } from "./use-tool-input";
+export { useToolOutput } from "./use-tool-output";
+export { useToolResponseMetadata } from "./use-tool-response-metadata";
 export { useMaxHeight } from "./use-max-height";
+
+// Additional hooks
 export { useIsChatGptApp } from "./use-is-chatgpt-app";
 
-// Types
+// Types and constants
 export type * from "./types";
+export { SET_GLOBALS_EVENT_TYPE, SetGlobalsEvent } from "./types";
 

@@ -1,63 +1,66 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import {
-  useWidgetProps,
-  useMaxHeight,
-  useDisplayMode,
-  useRequestDisplayMode,
-  useIsChatGptApp,
-} from "./hooks";
+import { useIsChatGptApp } from "./hooks";
+
+const demos = [
+  {
+    title: "API Dashboard",
+    href: "/api-dashboard",
+    description: "View all window.openai properties and their live values",
+    icon: "📊",
+    color: "bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700",
+  },
+  {
+    title: "Methods Playground",
+    href: "/methods-playground",
+    description: "Interactive controls to test all window.openai methods",
+    icon: "🎮",
+    color: "bg-purple-50 dark:bg-purple-950 border-purple-200 dark:border-purple-800 hover:border-purple-300 dark:hover:border-purple-700",
+  },
+  {
+    title: "State Demo",
+    href: "/state-demo",
+    description: "Explore widget state persistence across lifecycles",
+    icon: "💾",
+    color: "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800 hover:border-green-300 dark:hover:border-green-700",
+  },
+  {
+    title: "Events Monitor",
+    href: "/events-monitor",
+    description: "Live monitoring of openai:set_globals events",
+    icon: "📡",
+    color: "bg-orange-50 dark:bg-orange-950 border-orange-200 dark:border-orange-800 hover:border-orange-300 dark:hover:border-orange-700",
+  },
+];
+
+const tools = [
+  { name: "get_time", description: "Simple read-only tool that returns current time" },
+  { name: "calculator", description: "Performs basic mathematical calculations" },
+  { name: "counter_increment", description: "Widget-accessible server-side counter" },
+  { name: "get_weather", description: "Mock weather data with toolResponseMetadata" },
+  { name: "search_items", description: "Search mock database with structured content" },
+  { name: "show_content", description: "Original demo tool with widget rendering" },
+];
 
 export default function Home() {
-  const toolOutput = useWidgetProps<{
-    name?: string;
-    result?: { structuredContent?: { name?: string } };
-  }>();
-  const maxHeight = useMaxHeight() ?? undefined;
-  const displayMode = useDisplayMode();
-  const requestDisplayMode = useRequestDisplayMode();
   const isChatGptApp = useIsChatGptApp();
 
-  const name = toolOutput?.result?.structuredContent?.name || toolOutput?.name;
-
   return (
-    <div
-      className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20"
-      style={{
-        maxHeight,
-        height: displayMode === "fullscreen" ? maxHeight : undefined,
-      }}
-    >
-      {displayMode !== "fullscreen" && (
-        <button
-          aria-label="Enter fullscreen"
-          className="fixed top-4 right-4 z-50 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 shadow-lg ring-1 ring-slate-900/10 dark:ring-white/10 p-2.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-          onClick={() => requestDisplayMode("fullscreen")}
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.5}
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
-            />
-          </svg>
-        </button>
-      )}
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          OpenAI Apps SDK - Complete Demo
+        </h1>
+        <p className="text-lg text-slate-600 dark:text-slate-400">
+          A comprehensive demonstration of all <code className="text-sm bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">window.openai</code> functionality
+        </p>
         {!isChatGptApp && (
-          <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg px-4 py-3 w-full">
+          <div className="mt-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg px-4 py-3">
             <div className="flex items-center gap-3">
               <svg
-                className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0"
+                className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -69,66 +72,202 @@ export default function Home() {
                 />
               </svg>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-blue-900 dark:text-blue-100 font-medium">
-                  This app relies on data from a ChatGPT session.
+                <p className="text-sm text-yellow-900 dark:text-yellow-100 font-medium">
+                  ⚠️ Not running in ChatGPT - Some features may not work as expected
                 </p>
-                <p className="text-sm text-blue-900 dark:text-blue-100 font-medium">
-                  No{" "}
-                  <a
-                    href="https://developers.openai.com/apps-sdk/reference"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:no-underline font-mono bg-blue-100 dark:bg-blue-900 px-1 py-0.5 rounded"
-                  >
-                    window.openai
-                  </a>{" "}
-                  property detected
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                  To see the full functionality, load this app in ChatGPT via an MCP server
                 </p>
               </div>
             </div>
           </div>
         )}
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Welcome to the ChatGPT Apps SDK Next.js Starter
-          </li>
-          <li className="mb-2 tracking-[-.01em]">
-            Name returned from tool call: {name ?? "..."}
-          </li>
-          <li className="mb-2 tracking-[-.01em]">
-            MCP server path:{" "}
-            <Link href="/mcp" className="underline">
-              /mcp
-            </Link>
-          </li>
-        </ol>
+        {isChatGptApp && (
+          <div className="mt-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg px-4 py-3">
+            <p className="text-sm text-green-900 dark:text-green-100 font-medium">
+              ✓ Running in ChatGPT - All features available!
+            </p>
+          </div>
+        )}
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <Link
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            prefetch={false}
-            href="/custom-page"
-          >
-            Visit another page
-          </Link>
+      {/* Demo Pages */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+          Interactive Demos
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {demos.map((demo) => (
+            <Link
+              key={demo.href}
+              href={demo.href}
+              className={`${demo.color} border rounded-lg p-5 transition-all hover:shadow-md`}
+            >
+              <div className="flex items-start gap-3">
+                <span className="text-3xl">{demo.icon}</span>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                    {demo.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {demo.description}
+                  </p>
+                </div>
+                <svg
+                  className="w-5 h-5 text-slate-400 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Features Coverage */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
+            ✅ Properties Demonstrated
+          </h3>
+          <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">theme</code> - Light/dark mode detection
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">locale</code> - User locale settings
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">userAgent</code> - Device capabilities
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">safeArea</code> - Safe area insets
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">displayMode</code> - Layout mode
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">maxHeight</code> - Container constraints
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">toolInput/toolOutput</code> - Tool data
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">toolResponseMetadata</code> - Custom metadata
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600 dark:text-green-400">●</span>
+              <code className="font-mono">widgetState</code> - Persistent state
+            </li>
+          </ul>
+        </div>
+
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
+            ✅ Methods Demonstrated
+          </h3>
+          <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+            <li className="flex items-center gap-2">
+              <span className="text-blue-600 dark:text-blue-400">●</span>
+              <code className="font-mono">callTool()</code> - Direct tool invocation
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-blue-600 dark:text-blue-400">●</span>
+              <code className="font-mono">sendFollowUpMessage()</code> - Send messages
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-blue-600 dark:text-blue-400">●</span>
+              <code className="font-mono">openExternal()</code> - Open links
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-blue-600 dark:text-blue-400">●</span>
+              <code className="font-mono">requestDisplayMode()</code> - Layout control
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-blue-600 dark:text-blue-400">●</span>
+              <code className="font-mono">setWidgetState()</code> - State persistence
+            </li>
+            <li className="flex items-center gap-2 mt-4">
+              <span className="text-purple-600 dark:text-purple-400">●</span>
+              <strong>Event:</strong> <code className="font-mono">openai:set_globals</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* MCP Tools */}
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6 mb-8">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
+          🔧 Available MCP Tools
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {tools.map((tool) => (
+            <div
+              key={tool.name}
+              className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded p-3"
+            >
+              <code className="text-sm font-mono text-blue-600 dark:text-blue-400 font-semibold">
+                {tool.name}
+              </code>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                {tool.description}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-4">
+          MCP Server endpoint: <code className="bg-slate-100 dark:bg-slate-900 px-1.5 py-0.5 rounded">/mcp</code>
+        </p>
+      </div>
+
+      {/* Resources */}
+      <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
+          📚 Resources
+        </h3>
+        <div className="space-y-2">
           <a
-            href="https://vercel.com/templates/ai/chatgpt-app-with-next-js"
+            href="https://developers.openai.com/apps-sdk/reference"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline"
+            className="block text-sm text-blue-600 dark:text-blue-400 hover:underline"
           >
-            Deploy on Vercel
+            → OpenAI Apps SDK Reference
+          </a>
+          <a
+            href="https://developers.openai.com/apps-sdk/build/custom-ux"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            → Building Custom UX Guide
+          </a>
+          <a
+            href="https://github.com/anthropics/claude-code"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            → View on GitHub
           </a>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
