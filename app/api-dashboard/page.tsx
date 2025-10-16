@@ -197,20 +197,6 @@ export default function ApiDashboard() {
             mono
           />
         </PropertyCard>
-
-        {/* Widget State with Interactive Demo */}
-        <div className="md:col-span-2">
-          <PropertyCard title="Widget State (widgetState)">
-            <div className="space-y-4">
-              <div>
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                  Current State JSON:
-                </p>
-                <JsonValue data={widgetState} />
-              </div>
-            </div>
-          </PropertyCard>
-        </div>
       </div>
     </div>
   );

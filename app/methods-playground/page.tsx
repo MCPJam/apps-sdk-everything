@@ -29,9 +29,6 @@ const widgets: Widget[] = [
   { id: "show_widget_border_demo", title: "widgetPrefersBorder", category: "Meta", path: "/widget-border-demo" },
   { id: "show_widget_csp_demo", title: "widgetCSP", category: "Meta", path: "/widget-csp-demo" },
   { id: "show_widget_domain_demo", title: "widgetDomain", category: "Meta", path: "/widget-domain-demo" },
-
-  // Other
-  { id: "api_dashboard", title: "API Dashboard", category: "Docs", path: "/api-dashboard" },
 ];
 
 export default function MethodsPlayground() {
