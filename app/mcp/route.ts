@@ -294,6 +294,76 @@ const handler = createMcpHandler(async (server) => {
       };
     }
   );
+
+  // Widget Meta Demo - Demonstrates _meta field configurations
+  const widgetMetaHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-meta-demo");
+  const widgetMetaWidget: ContentWidget = {
+    id: "show_widget_meta_demo",
+    title: "Widget _meta Fields Demo",
+    templateUri: "ui://widget/meta-demo.html",
+    invoking: "Loading _meta fields demo...",
+    invoked: "_meta fields demo loaded",
+    html: widgetMetaHtml,
+    description: "Educational widget demonstrating component resource _meta field configurations",
+    widgetDomain: "https://nextjs.org/docs",
+  };
+
+  server.registerResource(
+    "widget-meta-demo",
+    widgetMetaWidget.templateUri,
+    {
+      title: widgetMetaWidget.title,
+      description: widgetMetaWidget.description,
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Interactive documentation showing how to use _meta fields like widgetDescription, widgetPrefersBorder, widgetCSP, and widgetDomain to control widget behavior in ChatGPT",
+        "openai/widgetPrefersBorder": true,
+        "openai/widgetCSP": {
+          "connect_domains": [
+            "api.github.com"
+          ],
+          "resource_domains": [
+            "fonts.googleapis.com"
+          ]
+        },
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${widgetMetaWidget.html}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Interactive documentation showing how to use _meta fields like widgetDescription, widgetPrefersBorder, widgetCSP, and widgetDomain to control widget behavior in ChatGPT",
+            "openai/widgetPrefersBorder": true,
+            "openai/widgetDomain": widgetMetaWidget.widgetDomain,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    widgetMetaWidget.id,
+    {
+      title: widgetMetaWidget.title,
+      description: "Display an educational widget about component resource _meta fields and their usage",
+      inputSchema: {},
+      _meta: widgetMeta(widgetMetaWidget),
+    },
+    async () => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Widget _meta fields demo loaded. This widget demonstrates the different _meta configurations available for ChatGPT components.",
+          },
+        ],
+        _meta: widgetMeta(widgetMetaWidget),
+      };
+    }
+  );
 });
 
 export const GET = handler;
