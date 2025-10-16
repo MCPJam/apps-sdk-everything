@@ -110,6 +110,7 @@ const handler = createMcpHandler(async (server) => {
         "openai/widgetDescription": "Displays current time in various formats",
         "openai/widgetPrefersBorder": false,
       },
+      annotations: { readOnlyHint: true }
     },
     async (uri) => ({
       contents: [
