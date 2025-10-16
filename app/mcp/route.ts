@@ -108,7 +108,7 @@ const handler = createMcpHandler(async (server) => {
       mimeType: "text/html+skybridge",
       _meta: {
         "openai/widgetDescription": "Displays current time in various formats",
-        "openai/widgetPrefersBorder": true,
+        "openai/widgetPrefersBorder": false,
       },
     },
     async (uri) => ({
@@ -119,7 +119,7 @@ const handler = createMcpHandler(async (server) => {
           text: `<html>${readOnlyHtml}</html>`,
           _meta: {
             "openai/widgetDescription": "Displays current time in various formats",
-            "openai/widgetPrefersBorder": true,
+            "openai/widgetPrefersBorder": false,
           },
         },
       ],
@@ -176,7 +176,7 @@ const handler = createMcpHandler(async (server) => {
       mimeType: "text/html+skybridge",
       _meta: {
         "openai/widgetDescription": "Shows calculation results with input parameters",
-        "openai/widgetPrefersBorder": true,
+        "openai/widgetPrefersBorder": false,
       },
     },
     async (uri) => ({
@@ -187,7 +187,7 @@ const handler = createMcpHandler(async (server) => {
           text: `<html>${calculatorHtml}</html>`,
           _meta: {
             "openai/widgetDescription": "Shows calculation results with input parameters",
-            "openai/widgetPrefersBorder": true,
+            "openai/widgetPrefersBorder": false,
           },
         },
       ],
@@ -274,7 +274,7 @@ const handler = createMcpHandler(async (server) => {
       mimeType: "text/html+skybridge",
       _meta: {
         "openai/widgetDescription": "Interactive counter widget demonstrating widget-accessible tools",
-        "openai/widgetPrefersBorder": true,
+        "openai/widgetPrefersBorder": false,
       },
     },
     async (uri) => ({
@@ -285,7 +285,7 @@ const handler = createMcpHandler(async (server) => {
           text: `<html>${widgetAccessibleHtml}</html>`,
           _meta: {
             "openai/widgetDescription": "Interactive counter widget demonstrating widget-accessible tools",
-            "openai/widgetPrefersBorder": true,
+            "openai/widgetPrefersBorder": false,
           },
         },
       ],
@@ -345,7 +345,7 @@ const handler = createMcpHandler(async (server) => {
       mimeType: "text/html+skybridge",
       _meta: {
         "openai/widgetDescription": "Weather widget showing how to use _meta fields in tool responses",
-        "openai/widgetPrefersBorder": true,
+        "openai/widgetPrefersBorder": false,
       },
     },
     async (uri) => ({
@@ -356,7 +356,7 @@ const handler = createMcpHandler(async (server) => {
           text: `<html>${toolMetadataHtml}</html>`,
           _meta: {
             "openai/widgetDescription": "Weather widget showing how to use _meta fields in tool responses",
-            "openai/widgetPrefersBorder": true,
+            "openai/widgetPrefersBorder": false,
           },
         },
       ],
@@ -423,7 +423,7 @@ const handler = createMcpHandler(async (server) => {
       mimeType: "text/html+skybridge",
       _meta: {
         "openai/widgetDescription": "Search results widget demonstrating structured content display",
-        "openai/widgetPrefersBorder": true,
+        "openai/widgetPrefersBorder": false,
       },
     },
     async (uri) => ({
@@ -434,7 +434,7 @@ const handler = createMcpHandler(async (server) => {
           text: `<html>${structuredContentHtml}</html>`,
           _meta: {
             "openai/widgetDescription": "Search results widget demonstrating structured content display",
-            "openai/widgetPrefersBorder": true,
+            "openai/widgetPrefersBorder": false,
           },
         },
       ],

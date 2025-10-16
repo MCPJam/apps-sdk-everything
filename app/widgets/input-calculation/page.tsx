@@ -35,6 +35,22 @@ export default function InputCalculationWidget() {
     );
   }
 
+  // Validate output structure
+  if (!output.operands || typeof output.result !== 'number') {
+    return (
+      <div className="w-full p-6">
+        <Card className="max-w-2xl mx-auto">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center justify-center py-8 text-destructive">
+              <p>Invalid output format</p>
+              <pre className="mt-4 text-xs">{JSON.stringify(output, null, 2)}</pre>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   const operationSymbols = {
     add: '+',
     subtract: '-',
