@@ -198,27 +198,6 @@ export default function ApiDashboard() {
           />
         </PropertyCard>
 
-        {/* Tool Input */}
-        <div className="md:col-span-2">
-          <PropertyCard title="Tool Input (toolInput)">
-            <JsonValue data={toolInput} />
-          </PropertyCard>
-        </div>
-
-        {/* Tool Output */}
-        <div className="md:col-span-2">
-          <PropertyCard title="Tool Output (toolOutput)">
-            <JsonValue data={toolOutput} />
-          </PropertyCard>
-        </div>
-
-        {/* Tool Response Metadata */}
-        <div className="md:col-span-2">
-          <PropertyCard title="Tool Response Metadata (toolResponseMetadata)">
-            <JsonValue data={toolResponseMetadata} />
-          </PropertyCard>
-        </div>
-
         {/* Widget State with Interactive Demo */}
         <div className="md:col-span-2">
           <PropertyCard title="Widget State (widgetState)">
