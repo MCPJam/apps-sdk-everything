@@ -15,7 +15,6 @@ const widgets: Widget[] = [
   { id: "input_calculation_widget", title: "Calculation", category: "Tool", path: "/widgets/input-calculation" },
   { id: "widget_accessible_tool", title: "Interactive Counter", category: "Tool", path: "/widgets/widget-accessible" },
   { id: "tool_metadata_widget", title: "Metadata", category: "Tool", path: "/widgets/tool-metadata" },
-  { id: "structured_content_widget", title: "Structured Content", category: "Tool", path: "/widgets/structured-content" },
 
   // Methods
   { id: "demo_call_tool", title: "callTool()", category: "Method", path: "/widgets/call-tool" },
