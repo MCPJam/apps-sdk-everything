@@ -295,28 +295,150 @@ const handler = createMcpHandler(async (server) => {
     }
   );
 
-  // Widget Meta Demo - Demonstrates _meta field configurations
-  const widgetMetaHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-meta-demo");
-  const widgetMetaWidget: ContentWidget = {
-    id: "show_widget_meta_demo",
-    title: "Widget _meta Fields Demo",
-    templateUri: "ui://widget/meta-demo.html",
-    invoking: "Loading _meta fields demo...",
-    invoked: "_meta fields demo loaded",
-    html: widgetMetaHtml,
-    description: "Educational widget demonstrating component resource _meta field configurations",
+  // 1. Widget Description Demo
+  const widgetDescHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-description-demo");
+  const widgetDescWidget: ContentWidget = {
+    id: "show_widget_description_demo",
+    title: "widgetDescription Demo",
+    templateUri: "ui://widget/description-demo.html",
+    invoking: "Loading description demo...",
+    invoked: "Description demo loaded",
+    html: widgetDescHtml,
+    description: "Demonstrates the openai/widgetDescription _meta field",
     widgetDomain: "https://nextjs.org/docs",
   };
 
   server.registerResource(
-    "widget-meta-demo",
-    widgetMetaWidget.templateUri,
+    "widget-description-demo",
+    widgetDescWidget.templateUri,
     {
-      title: widgetMetaWidget.title,
-      description: widgetMetaWidget.description,
+      title: widgetDescWidget.title,
+      description: widgetDescWidget.description,
       mimeType: "text/html+skybridge",
       _meta: {
-        "openai/widgetDescription": "Interactive documentation showing how to use _meta fields like widgetDescription, widgetPrefersBorder, widgetCSP, and widgetDomain to control widget behavior in ChatGPT",
+        "openai/widgetDescription": "A minimal demo showing the widgetDescription _meta field - provides context to the AI about this widget's content",
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${widgetDescWidget.html}</html>`,
+          _meta: {
+            "openai/widgetDescription": "A minimal demo showing the widgetDescription _meta field - provides context to the AI about this widget's content",
+            "openai/widgetDomain": widgetDescWidget.widgetDomain,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    widgetDescWidget.id,
+    {
+      title: widgetDescWidget.title,
+      description: "Show a minimal widget demonstrating the widgetDescription _meta field",
+      inputSchema: {},
+      _meta: widgetMeta(widgetDescWidget),
+    },
+    async () => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "widgetDescription demo loaded",
+          },
+        ],
+        _meta: widgetMeta(widgetDescWidget),
+      };
+    }
+  );
+
+  // 2. Widget Border Demo
+  const widgetBorderHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-border-demo");
+  const widgetBorderWidget: ContentWidget = {
+    id: "show_widget_border_demo",
+    title: "widgetPrefersBorder Demo",
+    templateUri: "ui://widget/border-demo.html",
+    invoking: "Loading border demo...",
+    invoked: "Border demo loaded",
+    html: widgetBorderHtml,
+    description: "Demonstrates the openai/widgetPrefersBorder _meta field",
+    widgetDomain: "https://nextjs.org/docs",
+  };
+
+  server.registerResource(
+    "widget-border-demo",
+    widgetBorderWidget.templateUri,
+    {
+      title: widgetBorderWidget.title,
+      description: widgetBorderWidget.description,
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Minimal demo of widgetPrefersBorder - this widget should render with a border",
+        "openai/widgetPrefersBorder": true,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${widgetBorderWidget.html}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Minimal demo of widgetPrefersBorder - this widget should render with a border",
+            "openai/widgetPrefersBorder": true,
+            "openai/widgetDomain": widgetBorderWidget.widgetDomain,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    widgetBorderWidget.id,
+    {
+      title: widgetBorderWidget.title,
+      description: "Show a minimal widget demonstrating the widgetPrefersBorder _meta field (renders with border)",
+      inputSchema: {},
+      _meta: widgetMeta(widgetBorderWidget),
+    },
+    async () => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "widgetPrefersBorder demo loaded",
+          },
+        ],
+        _meta: widgetMeta(widgetBorderWidget),
+      };
+    }
+  );
+
+  // 3. Widget CSP Demo
+  const widgetCSPHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-csp-demo");
+  const widgetCSPWidget: ContentWidget = {
+    id: "show_widget_csp_demo",
+    title: "widgetCSP Demo",
+    templateUri: "ui://widget/csp-demo.html",
+    invoking: "Loading CSP demo...",
+    invoked: "CSP demo loaded",
+    html: widgetCSPHtml,
+    description: "Demonstrates the openai/widgetCSP _meta field with connect_domains and resource_domains",
+    widgetDomain: "https://nextjs.org/docs",
+  };
+
+  server.registerResource(
+    "widget-csp-demo",
+    widgetCSPWidget.templateUri,
+    {
+      title: widgetCSPWidget.title,
+      description: widgetCSPWidget.description,
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Minimal demo of widgetCSP showing Content Security Policy configuration with allowed domains",
         "openai/widgetPrefersBorder": true,
         "openai/widgetCSP": {
           "connect_domains": [
@@ -333,11 +455,11 @@ const handler = createMcpHandler(async (server) => {
         {
           uri: uri.href,
           mimeType: "text/html+skybridge",
-          text: `<html>${widgetMetaWidget.html}</html>`,
+          text: `<html>${widgetCSPWidget.html}</html>`,
           _meta: {
-            "openai/widgetDescription": "Interactive documentation showing how to use _meta fields like widgetDescription, widgetPrefersBorder, widgetCSP, and widgetDomain to control widget behavior in ChatGPT",
+            "openai/widgetDescription": "Minimal demo of widgetCSP showing Content Security Policy configuration with allowed domains",
             "openai/widgetPrefersBorder": true,
-            "openai/widgetDomain": widgetMetaWidget.widgetDomain,
+            "openai/widgetDomain": widgetCSPWidget.widgetDomain,
           },
         },
       ],
@@ -345,22 +467,84 @@ const handler = createMcpHandler(async (server) => {
   );
 
   server.registerTool(
-    widgetMetaWidget.id,
+    widgetCSPWidget.id,
     {
-      title: widgetMetaWidget.title,
-      description: "Display an educational widget about component resource _meta fields and their usage",
+      title: widgetCSPWidget.title,
+      description: "Show a minimal widget demonstrating the widgetCSP _meta field with connect_domains and resource_domains",
       inputSchema: {},
-      _meta: widgetMeta(widgetMetaWidget),
+      _meta: widgetMeta(widgetCSPWidget),
     },
     async () => {
       return {
         content: [
           {
             type: "text",
-            text: "Widget _meta fields demo loaded. This widget demonstrates the different _meta configurations available for ChatGPT components.",
+            text: "widgetCSP demo loaded",
           },
         ],
-        _meta: widgetMeta(widgetMetaWidget),
+        _meta: widgetMeta(widgetCSPWidget),
+      };
+    }
+  );
+
+  // 4. Widget Domain Demo
+  const widgetDomainHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-domain-demo");
+  const widgetDomainWidget: ContentWidget = {
+    id: "show_widget_domain_demo",
+    title: "widgetDomain Demo",
+    templateUri: "ui://widget/domain-demo.html",
+    invoking: "Loading domain demo...",
+    invoked: "Domain demo loaded",
+    html: widgetDomainHtml,
+    description: "Demonstrates the openai/widgetDomain _meta field for custom widget origins",
+    widgetDomain: "https://nextjs.org/docs",
+  };
+
+  server.registerResource(
+    "widget-domain-demo",
+    widgetDomainWidget.templateUri,
+    {
+      title: widgetDomainWidget.title,
+      description: widgetDomainWidget.description,
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Minimal demo of widgetDomain showing how to specify a custom origin for hosted components",
+        "openai/widgetPrefersBorder": true,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${widgetDomainWidget.html}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Minimal demo of widgetDomain showing how to specify a custom origin for hosted components",
+            "openai/widgetPrefersBorder": true,
+            "openai/widgetDomain": widgetDomainWidget.widgetDomain,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    widgetDomainWidget.id,
+    {
+      title: widgetDomainWidget.title,
+      description: "Show a minimal widget demonstrating the widgetDomain _meta field for custom origins",
+      inputSchema: {},
+      _meta: widgetMeta(widgetDomainWidget),
+    },
+    async () => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "widgetDomain demo loaded",
+          },
+        ],
+        _meta: widgetMeta(widgetDomainWidget),
       };
     }
   );
