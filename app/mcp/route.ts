@@ -768,17 +768,27 @@ const handler = createMcpHandler(async (server) => {
         "openai/resultCanProduceWidget": true,
       },
     },
-    async () => ({
-      content: [{ type: "text", text: "WidgetState demo widget loaded" }],
-      structuredContent: {},
-      _meta: {
-        "openai/outputTemplate": "ui://widget/widget-state.html",
-        "openai/toolInvocation/invoking": "Loading demo...",
-        "openai/toolInvocation/invoked": "Demo loaded",
-        "openai/widgetAccessible": false,
-        "openai/resultCanProduceWidget": true,
-      },
-    })
+    async () => {
+      // Provide an initial empty state that ChatGPT will hydrate
+      const initialState = {
+        counter: 0,
+        data: "test",
+        timestamp: new Date().toISOString(),
+      };
+
+      return {
+        content: [{ type: "text", text: "WidgetState demo widget loaded" }],
+        structuredContent: {},
+        _meta: {
+          "openai/outputTemplate": "ui://widget/widget-state.html",
+          "openai/toolInvocation/invoking": "Loading demo...",
+          "openai/toolInvocation/invoked": "Demo loaded",
+          "openai/widgetAccessible": false,
+          "openai/resultCanProduceWidget": true,
+          "openai/widgetState": initialState,
+        },
+      };
+    }
   );
 
   // 1. Widget Description Demo
