@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/api-dashboard", label: "API Dashboard" },
-  { href: "/methods-playground", label: "Methods Playground" },
+  { href: "/methods-playground", label: "Widget Gallery" },
 ];
 
 export function Navigation() {
