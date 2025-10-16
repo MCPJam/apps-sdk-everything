@@ -377,7 +377,7 @@ const handler = createMcpHandler(async (server) => {
       mimeType: "text/html+skybridge",
       _meta: {
         "openai/widgetDescription": "Minimal demo of widgetPrefersBorder - this widget should render with a border",
-        "openai/widgetPrefersBorder": true,
+        "openai/widgetPrefersBorder": false,
       },
     },
     async (uri) => ({
