@@ -500,6 +500,287 @@ const handler = createMcpHandler(async (server) => {
     }
   );
 
+  // Method Demo Widgets
+  // 1. Call Tool Demo
+  const callToolHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/call-tool");
+  server.registerResource(
+    "call-tool-widget",
+    "ui://widget/call-tool.html",
+    {
+      title: "Call Tool Method Demo",
+      description: "Interactive widget for testing window.openai.callTool()",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Demonstrates calling MCP tools from within a widget",
+        "openai/widgetPrefersBorder": false,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${callToolHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Demonstrates calling MCP tools from within a widget",
+            "openai/widgetPrefersBorder": false,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "demo_call_tool",
+    {
+      title: "Demo: callTool() Method",
+      description: "Shows how to use window.openai.callTool() to invoke MCP tools from widgets",
+      inputSchema: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/call-tool.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    },
+    async () => ({
+      content: [{ type: "text", text: "CallTool demo widget loaded" }],
+      structuredContent: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/call-tool.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    })
+  );
+
+  // 2. Send Message Demo
+  const sendMessageHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/send-message");
+  server.registerResource(
+    "send-message-widget",
+    "ui://widget/send-message.html",
+    {
+      title: "Send Message Method Demo",
+      description: "Interactive widget for testing window.openai.sendFollowUpMessage()",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Demonstrates sending messages to the conversation",
+        "openai/widgetPrefersBorder": false,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${sendMessageHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Demonstrates sending messages to the conversation",
+            "openai/widgetPrefersBorder": false,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "demo_send_message",
+    {
+      title: "Demo: sendFollowUpMessage() Method",
+      description: "Shows how to use window.openai.sendFollowUpMessage() to add messages to the conversation",
+      inputSchema: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/send-message.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    },
+    async () => ({
+      content: [{ type: "text", text: "SendMessage demo widget loaded" }],
+      structuredContent: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/send-message.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    })
+  );
+
+  // 3. Open External Demo
+  const openExternalHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/open-external");
+  server.registerResource(
+    "open-external-widget",
+    "ui://widget/open-external.html",
+    {
+      title: "Open External Method Demo",
+      description: "Interactive widget for testing window.openai.openExternal()",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Demonstrates opening external links from widgets",
+        "openai/widgetPrefersBorder": false,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${openExternalHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Demonstrates opening external links from widgets",
+            "openai/widgetPrefersBorder": false,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "demo_open_external",
+    {
+      title: "Demo: openExternal() Method",
+      description: "Shows how to use window.openai.openExternal() to open links outside the app",
+      inputSchema: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/open-external.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    },
+    async () => ({
+      content: [{ type: "text", text: "OpenExternal demo widget loaded" }],
+      structuredContent: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/open-external.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    })
+  );
+
+  // 4. Display Mode Demo
+  const displayModeHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/display-mode");
+  server.registerResource(
+    "display-mode-widget",
+    "ui://widget/display-mode.html",
+    {
+      title: "Display Mode Method Demo",
+      description: "Interactive widget for testing window.openai.requestDisplayMode()",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Demonstrates requesting different display modes",
+        "openai/widgetPrefersBorder": false,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${displayModeHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Demonstrates requesting different display modes",
+            "openai/widgetPrefersBorder": false,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "demo_display_mode",
+    {
+      title: "Demo: requestDisplayMode() Method",
+      description: "Shows how to use window.openai.requestDisplayMode() to change widget layout",
+      inputSchema: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/display-mode.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    },
+    async () => ({
+      content: [{ type: "text", text: "DisplayMode demo widget loaded" }],
+      structuredContent: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/display-mode.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    })
+  );
+
+  // 5. Widget State Demo
+  const widgetStateHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/widget-state");
+  server.registerResource(
+    "widget-state-widget",
+    "ui://widget/widget-state.html",
+    {
+      title: "Widget State Method Demo",
+      description: "Interactive widget for testing window.openai.setWidgetState()",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Demonstrates persisting widget state",
+        "openai/widgetPrefersBorder": false,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${widgetStateHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Demonstrates persisting widget state",
+            "openai/widgetPrefersBorder": false,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "demo_widget_state",
+    {
+      title: "Demo: setWidgetState() Method",
+      description: "Shows how to use window.openai.setWidgetState() to persist component state",
+      inputSchema: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/widget-state.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    },
+    async () => ({
+      content: [{ type: "text", text: "WidgetState demo widget loaded" }],
+      structuredContent: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/widget-state.html",
+        "openai/toolInvocation/invoking": "Loading demo...",
+        "openai/toolInvocation/invoked": "Demo loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
+    })
+  );
+
   // 1. Widget Description Demo
   const widgetDescHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-description-demo");
   const widgetDescWidget: ContentWidget = {
