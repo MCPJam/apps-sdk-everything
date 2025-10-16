@@ -97,13 +97,48 @@ const handler = createMcpHandler(async (server) => {
     }
   );
 
-  // Tool 1: get_time - Simple read-only tool
-  server.registerTool(
-    "get_time",
+  // Tool 1: read_only_widget - Simple read-only tool
+  const readOnlyHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/read-only");
+  server.registerResource(
+    "read-only-widget",
+    "ui://widget/read-only.html",
     {
-      title: "Get Current Time",
-      description: "Returns the current server time in ISO format",
+      title: "Read-Only Widget",
+      description: "A simple read-only widget displaying time data",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Displays current time in various formats",
+        "openai/widgetPrefersBorder": true,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${readOnlyHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Displays current time in various formats",
+            "openai/widgetPrefersBorder": true,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "read_only_widget",
+    {
+      title: "Read-Only Widget Demo",
+      description: "Demonstrates a simple read-only widget with time data",
       inputSchema: {},
+      _meta: {
+        "openai/outputTemplate": "ui://widget/read-only.html",
+        "openai/toolInvocation/invoking": "Loading time data...",
+        "openai/toolInvocation/invoked": "Time data loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
+      },
     },
     async () => {
       const now = new Date();
@@ -119,20 +154,62 @@ const handler = createMcpHandler(async (server) => {
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           unixTimestamp: now.getTime(),
         },
+        _meta: {
+          "openai/outputTemplate": "ui://widget/read-only.html",
+          "openai/toolInvocation/invoking": "Loading time data...",
+          "openai/toolInvocation/invoked": "Time data loaded",
+          "openai/widgetAccessible": false,
+          "openai/resultCanProduceWidget": true,
+        },
       };
     }
   );
 
-  // Tool 2: calculator - Takes input and performs calculations
-  server.registerTool(
-    "calculator",
+  // Tool 2: input_calculation_widget - Takes input and performs calculations
+  const calculatorHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/input-calculation");
+  server.registerResource(
+    "input-calculation-widget",
+    "ui://widget/input-calculation.html",
     {
-      title: "Calculator",
-      description: "Performs basic mathematical calculations",
+      title: "Input & Calculation Widget",
+      description: "A widget that displays mathematical calculations",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Shows calculation results with input parameters",
+        "openai/widgetPrefersBorder": true,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${calculatorHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Shows calculation results with input parameters",
+            "openai/widgetPrefersBorder": true,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "input_calculation_widget",
+    {
+      title: "Input & Calculation Widget Demo",
+      description: "Demonstrates a widget that takes user input and performs calculations",
       inputSchema: {
         operation: z.enum(["add", "subtract", "multiply", "divide"]).describe("The operation to perform"),
         a: z.number().describe("First number"),
         b: z.number().describe("Second number"),
+      },
+      _meta: {
+        "openai/outputTemplate": "ui://widget/input-calculation.html",
+        "openai/toolInvocation/invoking": "Calculating...",
+        "openai/toolInvocation/invoked": "Calculation complete",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
       },
     },
     async ({ operation, a, b }) => {
@@ -175,22 +252,61 @@ const handler = createMcpHandler(async (server) => {
           operands: { a, b },
           result,
         },
+        _meta: {
+          "openai/outputTemplate": "ui://widget/input-calculation.html",
+          "openai/toolInvocation/invoking": "Calculating...",
+          "openai/toolInvocation/invoked": "Calculation complete",
+          "openai/widgetAccessible": false,
+          "openai/resultCanProduceWidget": true,
+        },
       };
     }
   );
 
-  // Tool 3: counter_increment - Widget accessible tool (can be called from component)
+  // Tool 3: widget_accessible_tool - Widget accessible tool (can be called from component)
+  const widgetAccessibleHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/widget-accessible");
+  server.registerResource(
+    "widget-accessible-tool",
+    "ui://widget/widget-accessible.html",
+    {
+      title: "Widget Accessible Tool",
+      description: "A widget that can call tools directly from within the component",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Interactive counter widget demonstrating widget-accessible tools",
+        "openai/widgetPrefersBorder": true,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${widgetAccessibleHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Interactive counter widget demonstrating widget-accessible tools",
+            "openai/widgetPrefersBorder": true,
+          },
+        },
+      ],
+    })
+  );
+
   let counter = 0;
   server.registerTool(
-    "counter_increment",
+    "widget_accessible_tool",
     {
-      title: "Increment Counter",
-      description: "Increments a server-side counter (widget accessible)",
+      title: "Widget Accessible Tool Demo",
+      description: "Demonstrates a tool that can be called from within a widget component",
       inputSchema: {
         amount: z.number().optional().describe("Amount to increment by (default: 1)"),
       },
       _meta: {
+        "openai/outputTemplate": "ui://widget/widget-accessible.html",
+        "openai/toolInvocation/invoking": "Incrementing counter...",
+        "openai/toolInvocation/invoked": "Counter incremented",
         "openai/widgetAccessible": true,
+        "openai/resultCanProduceWidget": true,
       },
     },
     async ({ amount = 1 }) => {
@@ -207,18 +323,60 @@ const handler = createMcpHandler(async (server) => {
           incrementAmount: amount,
           timestamp: new Date().toISOString(),
         },
+        _meta: {
+          "openai/outputTemplate": "ui://widget/widget-accessible.html",
+          "openai/toolInvocation/invoking": "Incrementing counter...",
+          "openai/toolInvocation/invoked": "Counter incremented",
+          "openai/widgetAccessible": true,
+          "openai/resultCanProduceWidget": true,
+        },
       };
     }
   );
 
-  // Tool 4: get_weather - Demonstrates toolResponseMetadata
-  server.registerTool(
-    "get_weather",
+  // Tool 4: tool_metadata_widget - Demonstrates toolResponseMetadata
+  const toolMetadataHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/tool-metadata");
+  server.registerResource(
+    "tool-metadata-widget",
+    "ui://widget/tool-metadata.html",
     {
-      title: "Get Weather",
-      description: "Returns mock weather data for a location",
+      title: "Tool Metadata Widget",
+      description: "A widget demonstrating tool response metadata usage",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Weather widget showing how to use _meta fields in tool responses",
+        "openai/widgetPrefersBorder": true,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${toolMetadataHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Weather widget showing how to use _meta fields in tool responses",
+            "openai/widgetPrefersBorder": true,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "tool_metadata_widget",
+    {
+      title: "Tool Metadata Widget Demo",
+      description: "Demonstrates a widget using tool response metadata (_meta)",
       inputSchema: {
         location: z.string().describe("City name or location"),
+      },
+      _meta: {
+        "openai/outputTemplate": "ui://widget/tool-metadata.html",
+        "openai/toolInvocation/invoking": "Fetching weather data...",
+        "openai/toolInvocation/invoked": "Weather data loaded",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
       },
     },
     async ({ location }) => {
@@ -241,6 +399,11 @@ const handler = createMcpHandler(async (server) => {
           windSpeed: Math.floor(Math.random() * 50),
         },
         _meta: {
+          "openai/outputTemplate": "ui://widget/tool-metadata.html",
+          "openai/toolInvocation/invoking": "Fetching weather data...",
+          "openai/toolInvocation/invoked": "Weather data loaded",
+          "openai/widgetAccessible": false,
+          "openai/resultCanProduceWidget": true,
           "custom/dataSource": "mock-weather-api",
           "custom/cached": false,
           "custom/timestamp": new Date().toISOString(),
@@ -249,15 +412,50 @@ const handler = createMcpHandler(async (server) => {
     }
   );
 
-  // Tool 5: search_items - Demonstrates structured content
-  server.registerTool(
-    "search_items",
+  // Tool 5: structured_content_widget - Demonstrates structured content
+  const structuredContentHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/structured-content");
+  server.registerResource(
+    "structured-content-widget",
+    "ui://widget/structured-content.html",
     {
-      title: "Search Items",
-      description: "Search through a mock database of items",
+      title: "Structured Content Widget",
+      description: "A widget displaying structured search results",
+      mimeType: "text/html+skybridge",
+      _meta: {
+        "openai/widgetDescription": "Search results widget demonstrating structured content display",
+        "openai/widgetPrefersBorder": true,
+      },
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "text/html+skybridge",
+          text: `<html>${structuredContentHtml}</html>`,
+          _meta: {
+            "openai/widgetDescription": "Search results widget demonstrating structured content display",
+            "openai/widgetPrefersBorder": true,
+          },
+        },
+      ],
+    })
+  );
+
+  server.registerTool(
+    "structured_content_widget",
+    {
+      title: "Structured Content Widget Demo",
+      description: "Demonstrates a widget displaying structured data",
       inputSchema: {
         query: z.string().describe("Search query"),
         limit: z.number().optional().describe("Maximum number of results (default: 5)"),
+      },
+      _meta: {
+        "openai/outputTemplate": "ui://widget/structured-content.html",
+        "openai/toolInvocation/invoking": "Searching...",
+        "openai/toolInvocation/invoked": "Search complete",
+        "openai/widgetAccessible": false,
+        "openai/resultCanProduceWidget": true,
       },
     },
     async ({ query, limit = 5 }) => {
@@ -290,6 +488,13 @@ const handler = createMcpHandler(async (server) => {
           query,
           totalResults: results.length,
           items: results,
+        },
+        _meta: {
+          "openai/outputTemplate": "ui://widget/structured-content.html",
+          "openai/toolInvocation/invoking": "Searching...",
+          "openai/toolInvocation/invoked": "Search complete",
+          "openai/widgetAccessible": false,
+          "openai/resultCanProduceWidget": true,
         },
       };
     }
