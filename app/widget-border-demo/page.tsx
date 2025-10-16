@@ -2,19 +2,33 @@
 
 export default function WidgetBorderDemo() {
   return (
-    <div className="p-0 m-0 min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500">
-      <div className="p-8">
-        <div className="text-center text-white mb-8">
-          <h1 className="text-4xl font-bold mb-4">🖼️ Border Effect Demo</h1>
-          <p className="text-lg">This widget has <code className="bg-white/20 px-3 py-1 rounded">widgetPrefersBorder: true</code></p>
-          <p className="text-sm mt-2 opacity-90">ChatGPT should render this with a visible border/card container</p>
-        </div>
+    <div className="p-6 max-w-2xl mx-auto">
+      <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-6 border border-purple-200 dark:border-purple-800 mb-6">
+        <h1 className="text-2xl font-bold text-purple-900 dark:text-purple-100 mb-2">
+          🖼️ widgetPrefersBorder: true
+        </h1>
+        <p className="text-purple-800 dark:text-purple-200 text-sm">
+          This widget has <code className="bg-purple-200 dark:bg-purple-800 px-2 py-1 rounded">widgetPrefersBorder: true</code> set in its _meta
+        </p>
+      </div>
 
-        <div className="max-w-2xl mx-auto bg-white/10 backdrop-blur-sm rounded-lg p-6 border-2 border-white/30">
-          <p className="text-white text-center text-lg">
-            ✅ If you see a border around this entire widget, widgetPrefersBorder is working!
-          </p>
+      <div className="bg-white dark:bg-slate-800 rounded-lg p-6 border-2 border-dashed border-purple-300 dark:border-purple-700 mb-4">
+        <div className="text-center mb-4">
+          <div className="text-4xl mb-2">👀</div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Look Around This Widget!</h2>
         </div>
+        <p className="text-sm text-slate-700 dark:text-slate-300 text-center">
+          The <code className="bg-slate-200 dark:bg-slate-700 px-1 rounded">widgetPrefersBorder</code> hint tells ChatGPT to render this widget inside a bordered card container.
+        </p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 text-center mt-3">
+          Check if there's a rounded border or card effect around this entire widget frame (not the dashed border you see here, but the outer container).
+        </p>
+      </div>
+
+      <div className="bg-blue-50 dark:bg-blue-950 rounded p-4 border border-blue-200 dark:border-blue-800">
+        <p className="text-xs text-blue-900 dark:text-blue-100">
+          <strong>Note:</strong> The border is added by ChatGPT's UI, not by our CSS. It provides visual separation from other content in the conversation.
+        </p>
       </div>
     </div>
   );
