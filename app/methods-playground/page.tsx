@@ -12,7 +12,6 @@ type Widget = {
 const widgets: Widget[] = [
   // Core Demos
   { id: "read_only_widget", title: "Read-Only", category: "Tool", path: "/widgets/read-only" },
-  { id: "input_calculation_widget", title: "Calculation", category: "Tool", path: "/widgets/input-calculation" },
   { id: "widget_accessible_tool", title: "Interactive Counter", category: "Tool", path: "/widgets/widget-accessible" },
   { id: "tool_metadata_widget", title: "Metadata", category: "Tool", path: "/widgets/tool-metadata" },
 
