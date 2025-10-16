@@ -54,7 +54,7 @@ export default function SendMessageWidget() {
             {isLoading ? 'Sending...' : 'Send Message'}
           </button>
 
-          {messageResult && (
+          {messageResult !== null && (
             <div className={`p-4 rounded-lg border-2 ${
               (messageResult as any).success
                 ? 'bg-white/10 border-white/30'

@@ -80,7 +80,7 @@ export default function CallToolWidget() {
             </div>
           )}
 
-          {toolResult && (
+          {toolResult !== null && (
             <div className="p-4 bg-white/10 border-2 border-white/30 rounded-lg">
               <p className="text-sm font-semibold mb-2">Result:</p>
               <pre className="text-xs font-mono overflow-x-auto bg-black/20 p-3 rounded">

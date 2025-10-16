@@ -70,7 +70,7 @@ export default function DisplayModeWidget() {
             {isLoading ? 'Requesting...' : 'Request Display Mode'}
           </button>
 
-          {displayModeResult && (
+          {displayModeResult !== null && (
             <div className={`p-4 rounded-lg border-2 ${
               !(displayModeResult as any).success
                 ? 'bg-red-500/20 border-red-300/50'

@@ -69,7 +69,7 @@ export default function WidgetStateWidget() {
             </div>
           )}
 
-          {stateResult && !error && (
+          {stateResult !== null && !error && (
             <div className={`p-4 rounded-lg border-2 ${
               (stateResult as any).success
                 ? 'bg-white/10 border-white/30'

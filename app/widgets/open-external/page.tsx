@@ -49,7 +49,7 @@ export default function OpenExternalWidget() {
             Open External Link
           </button>
 
-          {externalResult && (
+          {externalResult !== null && (
             <div className={`p-4 rounded-lg border-2 ${
               (externalResult as any).success
                 ? 'bg-white/10 border-white/30'
