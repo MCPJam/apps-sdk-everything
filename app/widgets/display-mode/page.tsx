@@ -4,6 +4,9 @@ import { useRequestDisplayMode } from '../../hooks/use-request-display-mode';
 import { useDisplayMode } from '../../hooks/use-display-mode';
 import { useState } from 'react';
 import type { DisplayMode } from '../../hooks/types';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default function DisplayModeWidget() {
   const requestDisplayMode = useRequestDisplayMode();
@@ -26,64 +29,56 @@ export default function DisplayModeWidget() {
   };
 
   return (
-    <div className="w-full p-6 font-sans">
-      <div className="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl p-8 text-white shadow-lg max-w-2xl mx-auto">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="text-2xl">📐</span>
-          <h2 className="text-xl font-semibold">requestDisplayMode()</h2>
-        </div>
-
-        <p className="text-sm opacity-90 mb-6">
-          Request layout transition between inline, PiP, and fullscreen modes
-        </p>
-
-        <div className="space-y-4">
-          <div className="p-4 bg-white/10 rounded-lg border-2 border-white/30">
-            <p className="text-sm font-semibold mb-1">Current Display Mode:</p>
-            <p className="text-lg font-mono">{currentDisplayMode || 'unknown'}</p>
+    <div className="w-full p-6">
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>requestDisplayMode()</CardTitle>
+          <CardDescription>Transition between inline, PiP, and fullscreen</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+            <span className="text-sm font-medium">Current Mode</span>
+            <Badge variant="secondary">{currentDisplayMode || 'unknown'}</Badge>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold mb-2">Request Mode:</label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Request Mode</label>
             <div className="grid grid-cols-3 gap-2">
               {(["inline", "pip", "fullscreen"] as const).map((mode) => (
-                <button
+                <Button
                   key={mode}
+                  variant={requestedMode === mode ? "default" : "outline"}
                   onClick={() => setRequestedMode(mode)}
-                  className={`py-3 px-4 rounded-lg font-semibold transition-all ${
-                    requestedMode === mode
-                      ? "bg-white text-indigo-600 shadow-lg scale-105"
-                      : "bg-white/20 hover:bg-white/30 border-2 border-white/30"
-                  }`}
+                  className="capitalize"
                 >
                   {mode}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
 
-          <button
+          <Button
             onClick={handleRequestDisplayMode}
             disabled={isLoading}
-            className="w-full py-3 px-6 text-lg font-semibold bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
+            className="w-full"
           >
             {isLoading ? 'Requesting...' : 'Request Display Mode'}
-          </button>
+          </Button>
 
           {displayModeResult !== null && (
-            <div className={`p-4 rounded-lg border-2 ${
+            <div className={`p-3 border rounded-md ${
               !(displayModeResult as any).success
-                ? 'bg-red-500/20 border-red-300/50'
-                : 'bg-white/10 border-white/30'
+                ? 'border-destructive bg-destructive/10'
+                : 'bg-muted'
             }`}>
-              <p className="text-sm font-semibold mb-2">Result:</p>
-              <pre className="text-xs font-mono">
+              <p className="text-sm font-medium mb-2">Result</p>
+              <pre className="text-xs font-mono overflow-x-auto">
                 {JSON.stringify(displayModeResult, null, 2)}
               </pre>
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -2,6 +2,8 @@
 
 import { useToolOutput } from '../../hooks/use-tool-output';
 import { useToolInput } from '../../hooks/use-tool-input';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type CalculatorInput = {
   operation: 'add' | 'subtract' | 'multiply' | 'divide';
@@ -21,11 +23,14 @@ export default function InputCalculationWidget() {
 
   if (output === null || input === null) {
     return (
-      <div className="w-full p-6 font-sans">
-        <div className="flex flex-col items-center justify-center gap-4 min-h-[200px]">
-          <div className="text-6xl animate-pulse">🔢</div>
-          <p>Calculating...</p>
-        </div>
+      <div className="w-full p-6">
+        <Card className="max-w-2xl mx-auto">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-center py-8 text-muted-foreground">
+              Loading...
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -37,49 +42,41 @@ export default function InputCalculationWidget() {
     divide: '÷',
   };
 
-  const operationEmoji = {
-    add: '➕',
-    subtract: '➖',
-    multiply: '✖️',
-    divide: '➗',
-  };
-
   const symbol = operationSymbols[input.operation];
-  const emoji = operationEmoji[input.operation];
 
   return (
-    <div className="w-full p-6 font-sans">
-      <div className="bg-gradient-to-br from-[#f093fb] to-[#f5576c] rounded-2xl p-8 text-white shadow-lg">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="text-2xl">{emoji}</span>
-          <h2 className="text-xl font-semibold">Calculator Result</h2>
-        </div>
+    <div className="w-full p-6">
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Calculation Result</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center justify-center gap-4 text-2xl font-semibold">
+            <span className="px-4 py-2 bg-muted rounded-lg min-w-[3rem] text-center">{output.operands.a}</span>
+            <span className="text-muted-foreground">{symbol}</span>
+            <span className="px-4 py-2 bg-muted rounded-lg min-w-[3rem] text-center">{output.operands.b}</span>
+            <span className="text-muted-foreground">=</span>
+            <span className="px-4 py-2 bg-primary text-primary-foreground rounded-lg min-w-[3rem] text-center">{output.result}</span>
+          </div>
 
-        <div className="p-8 bg-white/15 rounded-xl mb-6">
-          <div className="flex items-center justify-center gap-4 text-3xl font-bold flex-wrap">
-            <span className="bg-white/20 px-4 py-2 rounded-lg min-w-[3rem] text-center">{output.operands.a}</span>
-            <span className="text-4xl opacity-90">{symbol}</span>
-            <span className="bg-white/20 px-4 py-2 rounded-lg min-w-[3rem] text-center">{output.operands.b}</span>
-            <span className="text-4xl opacity-90">=</span>
-            <span className="bg-white/30 px-4 py-2 rounded-lg min-w-[3rem] text-center border-2 border-white/40">{output.result}</span>
-          </div>
-        </div>
+          <Separator />
 
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between items-center p-2 bg-white/10 rounded-lg text-sm">
-            <span className="font-semibold opacity-90">Operation:</span>
-            <span className="font-mono opacity-95 capitalize">{output.operation}</span>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Operation</span>
+              <span className="font-mono capitalize">{output.operation}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">First Number</span>
+              <span className="font-mono">{output.operands.a}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Second Number</span>
+              <span className="font-mono">{output.operands.b}</span>
+            </div>
           </div>
-          <div className="flex justify-between items-center p-2 bg-white/10 rounded-lg text-sm">
-            <span className="font-semibold opacity-90">First Number:</span>
-            <span className="font-mono opacity-95">{output.operands.a}</span>
-          </div>
-          <div className="flex justify-between items-center p-2 bg-white/10 rounded-lg text-sm">
-            <span className="font-semibold opacity-90">Second Number:</span>
-            <span className="font-mono opacity-95">{output.operands.b}</span>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

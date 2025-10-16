@@ -2,6 +2,9 @@
 
 import { useWidgetState } from '../../hooks/use-widget-state';
 import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function WidgetStateWidget() {
   const [widgetState, setWidgetState] = useWidgetState();
@@ -25,63 +28,55 @@ export default function WidgetStateWidget() {
   };
 
   return (
-    <div className="w-full p-6 font-sans">
-      <div className="bg-gradient-to-br from-orange-500 to-orange-700 rounded-2xl p-8 text-white shadow-lg max-w-2xl mx-auto">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="text-2xl">💾</span>
-          <h2 className="text-xl font-semibold">setWidgetState()</h2>
-        </div>
-
-        <p className="text-sm opacity-90 mb-6">
-          Persist component state (shown to the model, max ~4k tokens)
-        </p>
-
-        <div className="space-y-4">
-          <div className="p-4 bg-white/10 rounded-lg border-2 border-white/30">
-            <p className="text-sm font-semibold mb-2">Current Widget State:</p>
-            <pre className="text-xs font-mono overflow-x-auto bg-black/20 p-3 rounded">
+    <div className="w-full p-6">
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>setWidgetState()</CardTitle>
+          <CardDescription>Persist component state (max ~4k tokens)</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Current Widget State</label>
+            <pre className="text-xs font-mono overflow-x-auto bg-muted p-3 rounded-md">
               {JSON.stringify(widgetState, null, 2)}
             </pre>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold mb-2">New State (JSON):</label>
-            <textarea
+          <div className="space-y-2">
+            <label className="text-sm font-medium">New State (JSON)</label>
+            <Textarea
               value={stateJson}
               onChange={(e) => setStateJson(e.target.value)}
               rows={8}
-              className="w-full px-4 py-3 border-2 border-white/30 rounded-lg bg-white/10 text-white placeholder-white/60 font-mono text-sm focus:outline-none focus:border-white/50"
+              className="font-mono text-sm"
               placeholder='{"key": "value"}'
             />
           </div>
 
-          <button
-            onClick={handleSetWidgetState}
-            className="w-full py-3 px-6 text-lg font-semibold bg-white text-orange-600 rounded-lg hover:bg-orange-50 transition-all active:scale-95"
-          >
+          <Button onClick={handleSetWidgetState} className="w-full">
             Set Widget State
-          </button>
+          </Button>
 
           {error && (
-            <div className="p-4 bg-red-500/20 border-2 border-red-300/50 rounded-lg">
-              <p className="text-sm font-semibold mb-1">Error:</p>
-              <p className="text-sm font-mono">{error}</p>
+            <div className="p-3 border border-destructive bg-destructive/10 rounded-md">
+              <p className="text-sm font-medium mb-1">Error</p>
+              <p className="text-xs font-mono">{error}</p>
             </div>
           )}
 
           {stateResult !== null && !error && (
-            <div className={`p-4 rounded-lg border-2 ${
+            <div className={`p-3 border rounded-md ${
               (stateResult as any).success
-                ? 'bg-white/10 border-white/30'
-                : 'bg-red-500/20 border-red-300/50'
+                ? 'bg-muted'
+                : 'border-destructive bg-destructive/10'
             }`}>
-              <pre className="text-sm font-mono">
+              <pre className="text-xs font-mono overflow-x-auto">
                 {JSON.stringify(stateResult, null, 2)}
               </pre>
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
