@@ -21,29 +21,31 @@ export default function InputCalculationWidget() {
   const input = useToolInput<CalculatorInput>();
   const output = useToolOutput<CalculatorOutput>();
 
-  if (output === null || input === null) {
-    return (
-      <div className="w-full p-6">
-        <Card className="max-w-2xl mx-auto">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-center py-8 text-muted-foreground">
-              Loading...
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // Use default values if no tool output available
+  const defaultInput: CalculatorInput = {
+    operation: 'multiply',
+    a: 7,
+    b: 6,
+  };
+
+  const defaultOutput: CalculatorOutput = {
+    operation: 'multiply',
+    operands: { a: 7, b: 6 },
+    result: 42,
+  };
+
+  const calculationInput = input || defaultInput;
+  const calculationOutput = output || defaultOutput;
 
   // Validate output structure
-  if (!output.operands || typeof output.result !== 'number') {
+  if (!calculationOutput.operands || typeof calculationOutput.result !== 'number') {
     return (
       <div className="w-full p-6">
         <Card className="max-w-2xl mx-auto">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center justify-center py-8 text-destructive">
               <p>Invalid output format</p>
-              <pre className="mt-4 text-xs">{JSON.stringify(output, null, 2)}</pre>
+              <pre className="mt-4 text-xs">{JSON.stringify(calculationOutput, null, 2)}</pre>
             </div>
           </CardContent>
         </Card>
@@ -58,7 +60,7 @@ export default function InputCalculationWidget() {
     divide: '÷',
   };
 
-  const symbol = operationSymbols[input.operation];
+  const symbol = operationSymbols[calculationInput.operation];
 
   return (
     <div className="w-full p-6">
@@ -68,11 +70,11 @@ export default function InputCalculationWidget() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-center gap-4 text-2xl font-semibold">
-            <span className="px-4 py-2 bg-muted rounded-lg min-w-[3rem] text-center">{output.operands.a}</span>
+            <span className="px-4 py-2 bg-muted rounded-lg min-w-[3rem] text-center">{calculationOutput.operands.a}</span>
             <span className="text-muted-foreground">{symbol}</span>
-            <span className="px-4 py-2 bg-muted rounded-lg min-w-[3rem] text-center">{output.operands.b}</span>
+            <span className="px-4 py-2 bg-muted rounded-lg min-w-[3rem] text-center">{calculationOutput.operands.b}</span>
             <span className="text-muted-foreground">=</span>
-            <span className="px-4 py-2 bg-primary text-primary-foreground rounded-lg min-w-[3rem] text-center">{output.result}</span>
+            <span className="px-4 py-2 bg-primary text-primary-foreground rounded-lg min-w-[3rem] text-center">{calculationOutput.result}</span>
           </div>
 
           <Separator />
@@ -80,15 +82,15 @@ export default function InputCalculationWidget() {
           <div className="space-y-3">
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Operation</span>
-              <span className="font-mono capitalize">{output.operation}</span>
+              <span className="font-mono capitalize">{calculationOutput.operation}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">First Number</span>
-              <span className="font-mono">{output.operands.a}</span>
+              <span className="font-mono">{calculationOutput.operands.a}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Second Number</span>
-              <span className="font-mono">{output.operands.b}</span>
+              <span className="font-mono">{calculationOutput.operands.b}</span>
             </div>
           </div>
         </CardContent>

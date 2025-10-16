@@ -18,19 +18,14 @@ export default function WidgetAccessibleTool() {
   const callTool = useCallTool();
   const [isIncrementing, setIsIncrementing] = useState(false);
 
-  if (output === null) {
-    return (
-      <div className="w-full p-6">
-        <Card className="max-w-2xl mx-auto">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-center py-8 text-muted-foreground">
-              Loading...
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // Use default values if no tool output available
+  const defaultOutput: CounterOutput = {
+    counter: 0,
+    incrementAmount: 1,
+    timestamp: new Date().toISOString(),
+  };
+
+  const counterOutput = output || defaultOutput;
 
   const handleIncrement = async (amount: number) => {
     if (!callTool) {
@@ -57,7 +52,7 @@ export default function WidgetAccessibleTool() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center space-y-2">
-            <div className="text-5xl font-semibold">{output.counter}</div>
+            <div className="text-5xl font-semibold">{counterOutput.counter}</div>
             <div className="text-sm text-muted-foreground">Current Value</div>
           </div>
 
@@ -66,7 +61,7 @@ export default function WidgetAccessibleTool() {
               variant="outline"
               className="flex-1"
               onClick={() => handleIncrement(1)}
-              disabled={isIncrementing}
+              disabled={isIncrementing || !callTool}
             >
               +1
             </Button>
@@ -74,7 +69,7 @@ export default function WidgetAccessibleTool() {
               variant="outline"
               className="flex-1"
               onClick={() => handleIncrement(5)}
-              disabled={isIncrementing}
+              disabled={isIncrementing || !callTool}
             >
               +5
             </Button>
@@ -82,7 +77,7 @@ export default function WidgetAccessibleTool() {
               variant="outline"
               className="flex-1"
               onClick={() => handleIncrement(10)}
-              disabled={isIncrementing}
+              disabled={isIncrementing || !callTool}
             >
               +10
             </Button>
@@ -93,15 +88,20 @@ export default function WidgetAccessibleTool() {
           <div className="space-y-3">
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Last Increment</span>
-              <span className="font-mono">{output.incrementAmount}</span>
+              <span className="font-mono">{counterOutput.incrementAmount}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Updated</span>
               <span className="font-mono text-xs">
-                {new Date(output.timestamp).toLocaleTimeString()}
+                {new Date(counterOutput.timestamp).toLocaleTimeString()}
               </span>
             </div>
           </div>
+          {!callTool && (
+            <div className="text-xs text-muted-foreground text-center">
+              Note: Tool calling only available when invoked via ChatGPT
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
