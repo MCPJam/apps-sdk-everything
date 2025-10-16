@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { useToolOutput } from '../../app/hooks/use-tool-output';
+import { useCallTool } from '../../app/hooks/use-call-tool';
 import { useState } from 'react';
 
 type CounterOutput = {
@@ -11,6 +12,7 @@ type CounterOutput = {
 
 function App() {
   const output = useToolOutput<CounterOutput>();
+  const callTool = useCallTool();
   const [isIncrementing, setIsIncrementing] = useState(false);
 
   if (output === null) {
@@ -25,17 +27,14 @@ function App() {
   }
 
   const handleIncrement = async (amount: number) => {
-    if (typeof window.openai?.callTool !== 'function') {
+    if (!callTool) {
       console.error('callTool not available');
       return;
     }
 
     setIsIncrementing(true);
     try {
-      await window.openai.callTool({
-        name: 'widget_accessible_tool',
-        arguments: { amount },
-      });
+      await callTool('widget_accessible_tool', { amount });
     } catch (error) {
       console.error('Failed to increment:', error);
     } finally {
