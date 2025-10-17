@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   useTheme,
   useLocale,
@@ -14,24 +13,8 @@ import {
   useWidgetState,
   useIsChatGptApp,
 } from "../hooks";
-
-
-function PropertyCard({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-      <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
-        {title}
-      </h3>
-      <div className="space-y-2">{children}</div>
-    </div>
-  );
-}
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 function Property({
   label,
@@ -43,32 +26,14 @@ function Property({
   mono?: boolean;
 }) {
   return (
-    <div className="flex justify-between items-start gap-4">
-      <span className="text-sm text-slate-600 dark:text-slate-400 flex-shrink-0">
-        {label}:
+    <div className="flex justify-between items-center gap-4 text-sm">
+      <span className="text-muted-foreground flex-shrink-0">
+        {label}
       </span>
-      <span
-        className={`text-sm text-slate-900 dark:text-slate-100 text-right ${
-          mono ? "font-mono" : ""
-        }`}
-      >
+      <span className={mono ? "font-mono text-xs" : ""}>
         {value}
       </span>
     </div>
-  );
-}
-
-function JsonValue({ data }: { data: unknown }) {
-  if (data === null || data === undefined) {
-    return (
-      <span className="text-slate-400 dark:text-slate-500 italic">null</span>
-    );
-  }
-
-  return (
-    <pre className="text-xs bg-slate-100 dark:bg-slate-900 p-2 rounded overflow-x-auto">
-      {JSON.stringify(data, null, 2)}
-    </pre>
   );
 }
 
@@ -84,119 +49,111 @@ export default function ApiDashboard() {
   const toolResponseMetadata = useToolResponseMetadata();
   const isChatGptApp = useIsChatGptApp();
 
-  const [widgetState] = useWidgetState(); // Just read, don't initialize with default
+  const [widgetState] = useWidgetState();
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+        <h1 className="text-3xl font-semibold mb-2">
           window.openai API Dashboard
         </h1>
-        <p className="text-slate-600 dark:text-slate-400 mt-2">
+        <p className="text-muted-foreground">
           Live view of all window.openai properties and their current values
         </p>
         {!isChatGptApp && (
-          <div className="mt-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg px-4 py-3">
-            <p className="text-sm text-yellow-900 dark:text-yellow-100">
-              ⚠️ Not running in ChatGPT. Some properties may be null.
-            </p>
-          </div>
+          <Card className="mt-4 border-destructive/50 bg-destructive/10">
+            <CardContent className="pt-4">
+              <p className="text-sm">
+                Not running in ChatGPT. Some properties may be null.
+              </p>
+            </CardContent>
+          </Card>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Visual & Environment */}
-        <PropertyCard title="Visual & Environment">
-          <Property
-            label="theme"
-            value={
-              <span
-                className={`px-2 py-1 rounded text-xs font-medium ${
-                  theme === "dark"
-                    ? "bg-slate-800 text-slate-100"
-                    : "bg-slate-100 text-slate-900"
-                }`}
-              >
-                {theme || "null"}
-              </span>
-            }
-          />
-          <Property label="locale" value={locale || "null"} mono />
-        </PropertyCard>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Visual & Environment</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Property
+              label="theme"
+              value={<Badge variant="secondary">{theme || "null"}</Badge>}
+            />
+            <Property label="locale" value={locale || "null"} mono />
+          </CardContent>
+        </Card>
 
-        {/* User Agent */}
-        <PropertyCard title="User Agent">
-          <Property
-            label="device.type"
-            value={userAgent?.device.type || "null"}
-            mono
-          />
-          <Property
-            label="capabilities.hover"
-            value={
-              userAgent?.capabilities.hover !== undefined
-                ? userAgent.capabilities.hover
-                  ? "✓ true"
-                  : "✗ false"
-                : "null"
-            }
-          />
-          <Property
-            label="capabilities.touch"
-            value={
-              userAgent?.capabilities.touch !== undefined
-                ? userAgent.capabilities.touch
-                  ? "✓ true"
-                  : "✗ false"
-                : "null"
-            }
-          />
-        </PropertyCard>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">User Agent</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Property
+              label="device.type"
+              value={userAgent?.device.type || "null"}
+              mono
+            />
+            <Property
+              label="capabilities.hover"
+              value={
+                userAgent?.capabilities.hover !== undefined
+                  ? String(userAgent.capabilities.hover)
+                  : "null"
+              }
+            />
+            <Property
+              label="capabilities.touch"
+              value={
+                userAgent?.capabilities.touch !== undefined
+                  ? String(userAgent.capabilities.touch)
+                  : "null"
+              }
+            />
+          </CardContent>
+        </Card>
 
-        {/* Layout */}
-        <PropertyCard title="Layout">
-          <Property
-            label="displayMode"
-            value={
-              <span
-                className={`px-2 py-1 rounded text-xs font-medium ${
-                  displayMode === "fullscreen"
-                    ? "bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200"
-                    : displayMode === "pip"
-                    ? "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200"
-                    : "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200"
-                }`}
-              >
-                {displayMode || "null"}
-              </span>
-            }
-          />
-          <Property label="maxHeight" value={`${maxHeight}px` || "null"} mono />
-        </PropertyCard>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Layout</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Property
+              label="displayMode"
+              value={<Badge variant="secondary">{displayMode || "null"}</Badge>}
+            />
+            <Property label="maxHeight" value={maxHeight ? `${maxHeight}px` : "null"} mono />
+          </CardContent>
+        </Card>
 
-        {/* Safe Area */}
-        <PropertyCard title="Safe Area Insets">
-          <Property
-            label="top"
-            value={safeArea?.insets.top !== undefined ? `${safeArea.insets.top}px` : "null"}
-            mono
-          />
-          <Property
-            label="bottom"
-            value={safeArea?.insets.bottom !== undefined ? `${safeArea.insets.bottom}px` : "null"}
-            mono
-          />
-          <Property
-            label="left"
-            value={safeArea?.insets.left !== undefined ? `${safeArea.insets.left}px` : "null"}
-            mono
-          />
-          <Property
-            label="right"
-            value={safeArea?.insets.right !== undefined ? `${safeArea.insets.right}px` : "null"}
-            mono
-          />
-        </PropertyCard>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Safe Area Insets</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Property
+              label="top"
+              value={safeArea?.insets.top !== undefined ? `${safeArea.insets.top}px` : "null"}
+              mono
+            />
+            <Property
+              label="bottom"
+              value={safeArea?.insets.bottom !== undefined ? `${safeArea.insets.bottom}px` : "null"}
+              mono
+            />
+            <Property
+              label="left"
+              value={safeArea?.insets.left !== undefined ? `${safeArea.insets.left}px` : "null"}
+              mono
+            />
+            <Property
+              label="right"
+              value={safeArea?.insets.right !== undefined ? `${safeArea.insets.right}px` : "null"}
+              mono
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
