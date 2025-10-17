@@ -13,7 +13,6 @@ const widgets: Widget[] = [
   // Tool Examples
   { id: "read_only_widget", title: "Read-Only Data", category: "Tool Example", path: "/widgets/read-only" },
   { id: "widget_accessible_tool", title: "Call Tools from Widget", category: "Tool Example", path: "/widgets/widget-accessible" },
-  { id: "tool_metadata_widget", title: "Tool Response Data", category: "Tool Example", path: "/widgets/tool-metadata" },
 
   // Widget API
   { id: "demo_send_message", title: "Send Follow Up Message", category: "Widget API", path: "/widgets/send-message" },
