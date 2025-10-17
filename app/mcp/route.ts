@@ -166,105 +166,7 @@ const handler = createMcpHandler(async (server) => {
     }
   );
 
-  // Tool 2: input_calculation_widget - Takes input and performs calculations
-  const calculatorHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/input-calculation");
-  server.registerResource(
-    "input-calculation-widget",
-    "ui://widget/input-calculation.html",
-    {
-      title: "Input & Calculation Widget",
-      description: "A widget that displays mathematical calculations",
-      mimeType: "text/html+skybridge",
-      _meta: {
-        "openai/widgetDescription": "Shows calculation results with input parameters",
-        "openai/widgetPrefersBorder": false,
-      },
-    },
-    async (uri) => ({
-      contents: [
-        {
-          uri: uri.href,
-          mimeType: "text/html+skybridge",
-          text: `<html>${calculatorHtml}</html>`,
-          _meta: {
-            "openai/widgetDescription": "Shows calculation results with input parameters",
-            "openai/widgetPrefersBorder": false,
-          },
-        },
-      ],
-    })
-  );
-
-  server.registerTool(
-    "input_calculation_widget",
-    {
-      title: "Input & Calculation Widget Demo",
-      description: "Demonstrates a widget that takes user input and performs calculations",
-      inputSchema: {
-        operation: z.enum(["add", "subtract", "multiply", "divide"]).describe("The operation to perform"),
-        a: z.number().describe("First number"),
-        b: z.number().describe("Second number"),
-      },
-      _meta: {
-        "openai/outputTemplate": "ui://widget/input-calculation.html",
-        "openai/toolInvocation/invoking": "Calculating...",
-        "openai/toolInvocation/invoked": "Calculation complete",
-        "openai/widgetAccessible": false,
-        "openai/resultCanProduceWidget": true,
-      },
-    },
-    async ({ operation, a, b }) => {
-      let result: number;
-      switch (operation) {
-        case "add":
-          result = a + b;
-          break;
-        case "subtract":
-          result = a - b;
-          break;
-        case "multiply":
-          result = a * b;
-          break;
-        case "divide":
-          if (b === 0) {
-            return {
-              content: [
-                {
-                  type: "text",
-                  text: "Error: Division by zero",
-                },
-              ],
-              isError: true,
-            };
-          }
-          result = a / b;
-          break;
-      }
-
-      return {
-        content: [
-          {
-            type: "text",
-            text: `${a} ${operation} ${b} = ${result}`,
-          },
-        ],
-        structuredContent: {
-          operation,
-          operands: { a, b },
-          result,
-        },
-        _meta: {
-          "openai/outputTemplate": "ui://widget/input-calculation.html",
-          "openai/toolInvocation/invoking": "Calculating...",
-          "openai/toolInvocation/invoked": "Calculation complete",
-          "openai/widgetAccessible": false,
-          "openai/resultCanProduceWidget": true,
-        },
-      };
-    }
-  );
-
-  // Tool 3: widget_accessible_tool - Widget accessible tool (can be called from component)
+  // Tool 2: widget_accessible_tool - Widget accessible tool (can be called from component)
   const widgetAccessibleHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/widget-accessible");
   server.registerResource(
     "widget-accessible-tool",
@@ -408,94 +310,6 @@ const handler = createMcpHandler(async (server) => {
           "custom/dataSource": "mock-weather-api",
           "custom/cached": false,
           "custom/timestamp": new Date().toISOString(),
-        },
-      };
-    }
-  );
-
-  // Tool 5: structured_content_widget - Demonstrates structured content
-  const structuredContentHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/structured-content");
-  server.registerResource(
-    "structured-content-widget",
-    "ui://widget/structured-content.html",
-    {
-      title: "Structured Content Widget",
-      description: "A widget displaying structured search results",
-      mimeType: "text/html+skybridge",
-      _meta: {
-        "openai/widgetDescription": "Search results widget demonstrating structured content display",
-        "openai/widgetPrefersBorder": false,
-      },
-    },
-    async (uri) => ({
-      contents: [
-        {
-          uri: uri.href,
-          mimeType: "text/html+skybridge",
-          text: `<html>${structuredContentHtml}</html>`,
-          _meta: {
-            "openai/widgetDescription": "Search results widget demonstrating structured content display",
-            "openai/widgetPrefersBorder": false,
-          },
-        },
-      ],
-    })
-  );
-
-  server.registerTool(
-    "structured_content_widget",
-    {
-      title: "Structured Content Widget Demo",
-      description: "Demonstrates a widget displaying structured data",
-      inputSchema: {
-        query: z.string().describe("Search query"),
-        limit: z.number().optional().describe("Maximum number of results (default: 5)"),
-      },
-      _meta: {
-        "openai/outputTemplate": "ui://widget/structured-content.html",
-        "openai/toolInvocation/invoking": "Searching...",
-        "openai/toolInvocation/invoked": "Search complete",
-        "openai/widgetAccessible": false,
-        "openai/resultCanProduceWidget": true,
-      },
-    },
-    async ({ query, limit = 5 }) => {
-      const mockItems = [
-        { id: 1, name: "Laptop", category: "Electronics", price: 999 },
-        { id: 2, name: "Mouse", category: "Electronics", price: 29 },
-        { id: 3, name: "Keyboard", category: "Electronics", price: 79 },
-        { id: 4, name: "Desk Chair", category: "Furniture", price: 299 },
-        { id: 5, name: "Monitor", category: "Electronics", price: 399 },
-        { id: 6, name: "Headphones", category: "Electronics", price: 149 },
-        { id: 7, name: "Desk Lamp", category: "Furniture", price: 49 },
-        { id: 8, name: "Notebook", category: "Stationery", price: 5 },
-      ];
-
-      const results = mockItems
-        .filter((item) =>
-          item.name.toLowerCase().includes(query.toLowerCase()) ||
-          item.category.toLowerCase().includes(query.toLowerCase())
-        )
-        .slice(0, limit);
-
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Found ${results.length} items matching "${query}"`,
-          },
-        ],
-        structuredContent: {
-          query,
-          totalResults: results.length,
-          items: results,
-        },
-        _meta: {
-          "openai/outputTemplate": "ui://widget/structured-content.html",
-          "openai/toolInvocation/invoking": "Searching...",
-          "openai/toolInvocation/invoked": "Search complete",
-          "openai/widgetAccessible": false,
-          "openai/resultCanProduceWidget": true,
         },
       };
     }
@@ -792,6 +606,7 @@ const handler = createMcpHandler(async (server) => {
     }
   );
 
+  // Meta Field Demo Widgets
   // 1. Widget Description Demo
   const widgetDescHtml = await getAppsSdkCompatibleHtml(baseURL, "/widget-description-demo");
   const widgetDescWidget: ContentWidget = {

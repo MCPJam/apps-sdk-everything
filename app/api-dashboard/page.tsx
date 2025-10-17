@@ -7,10 +7,6 @@ import {
   useSafeArea,
   useDisplayMode,
   useMaxHeight,
-  useToolInput,
-  useToolOutput,
-  useToolResponseMetadata,
-  useWidgetState,
   useIsChatGptApp,
 } from "../hooks";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,12 +40,7 @@ export default function ApiDashboard() {
   const safeArea = useSafeArea();
   const displayMode = useDisplayMode();
   const maxHeight = useMaxHeight();
-  const toolInput = useToolInput();
-  const toolOutput = useToolOutput();
-  const toolResponseMetadata = useToolResponseMetadata();
   const isChatGptApp = useIsChatGptApp();
-
-  const [widgetState] = useWidgetState();
 
   return (
     <div className="max-w-7xl mx-auto p-6">

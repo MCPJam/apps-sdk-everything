@@ -6,7 +6,6 @@ export { useRequestDisplayMode } from "./use-request-display-mode";
 
 // OpenAI state hooks
 export { useDisplayMode } from "./use-display-mode";
-export { useWidgetProps } from "./use-widget-props";
 export { useWidgetState } from "./use-widget-state";
 export { useOpenAIGlobal } from "./use-openai-global";
 
