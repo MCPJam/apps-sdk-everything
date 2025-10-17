@@ -16,7 +16,7 @@ const widgets: Widget[] = [
   { id: "tool_metadata_widget", title: "Tool Response Data", category: "Tool Example", path: "/widgets/tool-metadata" },
 
   // Widget API
-  { id: "demo_send_message", title: "Send Messages", category: "Widget API", path: "/widgets/send-message" },
+  { id: "demo_send_message", title: "Send Follow Up Message", category: "Widget API", path: "/widgets/send-message" },
   { id: "demo_open_external", title: "Open External Links", category: "Widget API", path: "/widgets/open-external" },
   { id: "demo_display_mode", title: "Change Display Mode", category: "Widget API", path: "/widgets/display-mode" },
   { id: "demo_widget_state", title: "Save Widget State", category: "Widget API", path: "/widgets/widget-state" },
