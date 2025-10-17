@@ -166,17 +166,17 @@ const handler = createMcpHandler(async (server) => {
     }
   );
 
-  // Tool 2: widget_accessible_tool - Widget accessible tool (can be called from component)
+  // Tool 2: widget_accessible_tool - Call tools from widget itself
   const widgetAccessibleHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/widget-accessible");
   server.registerResource(
     "widget-accessible-tool",
     "ui://widget/widget-accessible.html",
     {
-      title: "Widget Accessible Tool",
-      description: "A widget that can call tools directly from within the component",
+      title: "Call Tools from Widget",
+      description: "Widget that calls MCP tools directly using window.openai.callTool()",
       mimeType: "text/html+skybridge",
       _meta: {
-        "openai/widgetDescription": "Interactive counter widget demonstrating widget-accessible tools",
+        "openai/widgetDescription": "Counter widget demonstrating how widgets can call tools directly with openai/widgetAccessible: true",
         "openai/widgetPrefersBorder": false,
       },
     },
@@ -187,7 +187,7 @@ const handler = createMcpHandler(async (server) => {
           mimeType: "text/html+skybridge",
           text: `<html>${widgetAccessibleHtml}</html>`,
           _meta: {
-            "openai/widgetDescription": "Interactive counter widget demonstrating widget-accessible tools",
+            "openai/widgetDescription": "Counter widget demonstrating how widgets can call tools directly with openai/widgetAccessible: true",
             "openai/widgetPrefersBorder": false,
           },
         },
@@ -199,15 +199,15 @@ const handler = createMcpHandler(async (server) => {
   server.registerTool(
     "widget_accessible_tool",
     {
-      title: "Widget Accessible Tool Demo",
-      description: "Demonstrates a tool that can be called from within a widget component",
+      title: "Call Tools from Widget Demo",
+      description: "A widget-accessible tool that increments a counter. Can be called directly from the widget using window.openai.callTool()",
       inputSchema: {
         amount: z.number().optional().describe("Amount to increment by (default: 1)"),
       },
       _meta: {
         "openai/outputTemplate": "ui://widget/widget-accessible.html",
-        "openai/toolInvocation/invoking": "Incrementing counter...",
-        "openai/toolInvocation/invoked": "Counter incremented",
+        "openai/toolInvocation/invoking": "Calling tool from widget...",
+        "openai/toolInvocation/invoked": "Tool call completed",
         "openai/widgetAccessible": true,
         "openai/resultCanProduceWidget": true,
       },
@@ -228,8 +228,8 @@ const handler = createMcpHandler(async (server) => {
         },
         _meta: {
           "openai/outputTemplate": "ui://widget/widget-accessible.html",
-          "openai/toolInvocation/invoking": "Incrementing counter...",
-          "openai/toolInvocation/invoked": "Counter incremented",
+          "openai/toolInvocation/invoking": "Calling tool from widget...",
+          "openai/toolInvocation/invoked": "Tool call completed",
           "openai/widgetAccessible": true,
           "openai/resultCanProduceWidget": true,
         },

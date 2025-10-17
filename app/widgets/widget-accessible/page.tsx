@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import type { CallToolResponse } from '../../hooks/types';
 
 type CounterOutput = {
   counter: number;
@@ -17,6 +19,7 @@ export default function WidgetAccessibleTool() {
   const output = useToolOutput<CounterOutput>();
   const callTool = useCallTool();
   const [isIncrementing, setIsIncrementing] = useState(false);
+  const [lastResponse, setLastResponse] = useState<CallToolResponse | null>(null);
 
   // Use default values if no tool output available
   const defaultOutput: CounterOutput = {
@@ -35,7 +38,8 @@ export default function WidgetAccessibleTool() {
 
     setIsIncrementing(true);
     try {
-      await callTool('widget_accessible_tool', { amount });
+      const response = await callTool('widget_accessible_tool', { amount });
+      setLastResponse(response);
     } catch (error) {
       console.error('Failed to increment:', error);
     } finally {
@@ -44,11 +48,14 @@ export default function WidgetAccessibleTool() {
   };
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-6 space-y-4">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Interactive Counter</CardTitle>
-          <CardDescription>Widget can call tools directly</CardDescription>
+          <CardTitle>Call Tools from Widget</CardTitle>
+          <CardDescription>
+            Demonstrates <Badge variant="secondary" className="font-mono text-xs">openai/widgetAccessible: true</Badge> -
+            widgets can call MCP tools directly using <code className="text-xs bg-muted px-1 py-0.5 rounded">window.openai.callTool()</code>
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center space-y-2">
@@ -63,7 +70,7 @@ export default function WidgetAccessibleTool() {
               onClick={() => handleIncrement(1)}
               disabled={isIncrementing || !callTool}
             >
-              +1
+              {isIncrementing ? "Calling..." : "+1"}
             </Button>
             <Button
               variant="outline"
@@ -71,7 +78,7 @@ export default function WidgetAccessibleTool() {
               onClick={() => handleIncrement(5)}
               disabled={isIncrementing || !callTool}
             >
-              +5
+              {isIncrementing ? "Calling..." : "+5"}
             </Button>
             <Button
               variant="outline"
@@ -79,7 +86,7 @@ export default function WidgetAccessibleTool() {
               onClick={() => handleIncrement(10)}
               disabled={isIncrementing || !callTool}
             >
-              +10
+              {isIncrementing ? "Calling..." : "+10"}
             </Button>
           </div>
 
@@ -104,6 +111,27 @@ export default function WidgetAccessibleTool() {
           )}
         </CardContent>
       </Card>
+
+      {lastResponse && (
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle className="text-base">Last Tool Call Response</CardTitle>
+            <CardDescription>Raw response from window.openai.callTool()</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground mb-2">
+                Response Type: <Badge variant="secondary" className="ml-2 font-mono text-xs">CallToolResponse</Badge>
+              </div>
+              <div className="bg-muted rounded p-3">
+                <pre className="text-xs overflow-x-auto">
+                  {JSON.stringify(lastResponse, null, 2)}
+                </pre>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
