@@ -25,8 +25,8 @@ export default function OpenExternalWidget() {
     <div className="w-full p-6">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>openExternal()</CardTitle>
-          <CardDescription>Open external links or redirect to other pages</CardDescription>
+          <CardTitle>Open External Links</CardTitle>
+          <CardDescription>Open external links or redirect to other pages using openExternal()</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

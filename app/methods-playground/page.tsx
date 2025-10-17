@@ -10,20 +10,20 @@ type Widget = {
 };
 
 const widgets: Widget[] = [
-  // Core Demos
-  { id: "read_only_widget", title: "Read-Only", category: "Tool", path: "/widgets/read-only" },
-  { id: "widget_accessible_tool", title: "Call Tools from Widget", category: "Tool", path: "/widgets/widget-accessible" },
-  { id: "tool_metadata_widget", title: "Metadata", category: "Tool", path: "/widgets/tool-metadata" },
+  // Tool Examples
+  { id: "read_only_widget", title: "Read-Only Data", category: "Tool Example", path: "/widgets/read-only" },
+  { id: "widget_accessible_tool", title: "Call Tools from Widget", category: "Tool Example", path: "/widgets/widget-accessible" },
+  { id: "tool_metadata_widget", title: "Tool Response Data", category: "Tool Example", path: "/widgets/tool-metadata" },
 
-  // Methods
-  { id: "demo_send_message", title: "sendFollowUpMessage()", category: "Method", path: "/widgets/send-message" },
-  { id: "demo_open_external", title: "openExternal()", category: "Method", path: "/widgets/open-external" },
-  { id: "demo_display_mode", title: "requestDisplayMode()", category: "Method", path: "/widgets/display-mode" },
-  { id: "demo_widget_state", title: "setWidgetState()", category: "Method", path: "/widgets/widget-state" },
+  // Widget API
+  { id: "demo_send_message", title: "Send Messages", category: "Widget API", path: "/widgets/send-message" },
+  { id: "demo_open_external", title: "Open External Links", category: "Widget API", path: "/widgets/open-external" },
+  { id: "demo_display_mode", title: "Change Display Mode", category: "Widget API", path: "/widgets/display-mode" },
+  { id: "demo_widget_state", title: "Save Widget State", category: "Widget API", path: "/widgets/widget-state" },
 
-  // Meta Fields
-  { id: "show_widget_description_demo", title: "widgetDescription", category: "Meta", path: "/widget-description-demo" },
-  { id: "show_widget_csp_demo", title: "widgetCSP", category: "Meta", path: "/widget-csp-demo" },
+  // Widget Metadata
+  { id: "show_widget_description_demo", title: "Widget Description", category: "Widget Metadata", path: "/widget-description-demo" },
+  { id: "show_widget_csp_demo", title: "Security Policy (CSP)", category: "Widget Metadata", path: "/widget-csp-demo" },
 ];
 
 export default function MethodsPlayground() {

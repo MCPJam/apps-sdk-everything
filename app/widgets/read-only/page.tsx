@@ -33,7 +33,7 @@ export default function ReadOnlyWidget() {
     <div className="w-full p-6">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Current Time</CardTitle>
+          <CardTitle>Read-Only Data</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center space-y-2">

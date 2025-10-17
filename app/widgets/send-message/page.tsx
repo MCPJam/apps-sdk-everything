@@ -29,8 +29,8 @@ export default function SendMessageWidget() {
     <div className="w-full p-6">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>sendFollowUpMessage()</CardTitle>
-          <CardDescription>Insert a message into the conversation</CardDescription>
+          <CardTitle>Send Messages</CardTitle>
+          <CardDescription>Insert a message into the conversation using sendFollowUpMessage()</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

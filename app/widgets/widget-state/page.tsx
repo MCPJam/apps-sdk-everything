@@ -31,8 +31,8 @@ export default function WidgetStateWidget() {
     <div className="w-full p-6">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>setWidgetState()</CardTitle>
-          <CardDescription>Persist component state (max ~4k tokens)</CardDescription>
+          <CardTitle>Save Widget State</CardTitle>
+          <CardDescription>Persist component state (max ~4k tokens) using setWidgetState()</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

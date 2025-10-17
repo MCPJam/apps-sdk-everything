@@ -32,8 +32,8 @@ export default function DisplayModeWidget() {
     <div className="w-full p-6">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>requestDisplayMode()</CardTitle>
-          <CardDescription>Transition between inline, PiP, and fullscreen</CardDescription>
+          <CardTitle>Change Display Mode</CardTitle>
+          <CardDescription>Transition between inline, PiP, and fullscreen using requestDisplayMode()</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
