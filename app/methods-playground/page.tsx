@@ -16,7 +16,6 @@ const widgets: Widget[] = [
   { id: "tool_metadata_widget", title: "Metadata", category: "Tool", path: "/widgets/tool-metadata" },
 
   // Methods
-  { id: "demo_call_tool", title: "callTool()", category: "Method", path: "/widgets/call-tool" },
   { id: "demo_send_message", title: "sendFollowUpMessage()", category: "Method", path: "/widgets/send-message" },
   { id: "demo_open_external", title: "openExternal()", category: "Method", path: "/widgets/open-external" },
   { id: "demo_display_mode", title: "requestDisplayMode()", category: "Method", path: "/widgets/display-mode" },

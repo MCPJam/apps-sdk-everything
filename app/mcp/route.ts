@@ -316,63 +316,7 @@ const handler = createMcpHandler(async (server) => {
   );
 
   // Method Demo Widgets
-  // 1. Call Tool Demo
-  const callToolHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/call-tool");
-  server.registerResource(
-    "call-tool-widget",
-    "ui://widget/call-tool.html",
-    {
-      title: "Call Tool Method Demo",
-      description: "Interactive widget for testing window.openai.callTool()",
-      mimeType: "text/html+skybridge",
-      _meta: {
-        "openai/widgetDescription": "Demonstrates calling MCP tools from within a widget",
-        "openai/widgetPrefersBorder": false,
-      },
-    },
-    async (uri) => ({
-      contents: [
-        {
-          uri: uri.href,
-          mimeType: "text/html+skybridge",
-          text: `<html>${callToolHtml}</html>`,
-          _meta: {
-            "openai/widgetDescription": "Demonstrates calling MCP tools from within a widget",
-            "openai/widgetPrefersBorder": false,
-          },
-        },
-      ],
-    })
-  );
-
-  server.registerTool(
-    "demo_call_tool",
-    {
-      title: "Demo: callTool() Method",
-      description: "Shows how to use window.openai.callTool() to invoke MCP tools from widgets",
-      inputSchema: {},
-      _meta: {
-        "openai/outputTemplate": "ui://widget/call-tool.html",
-        "openai/toolInvocation/invoking": "Loading demo...",
-        "openai/toolInvocation/invoked": "Demo loaded",
-        "openai/widgetAccessible": false,
-        "openai/resultCanProduceWidget": true,
-      },
-    },
-    async () => ({
-      content: [{ type: "text", text: "CallTool demo widget loaded" }],
-      structuredContent: {},
-      _meta: {
-        "openai/outputTemplate": "ui://widget/call-tool.html",
-        "openai/toolInvocation/invoking": "Loading demo...",
-        "openai/toolInvocation/invoked": "Demo loaded",
-        "openai/widgetAccessible": false,
-        "openai/resultCanProduceWidget": true,
-      },
-    })
-  );
-
-  // 2. Send Message Demo
+  // 1. Send Message Demo
   const sendMessageHtml = await getAppsSdkCompatibleHtml(baseURL, "/widgets/send-message");
   server.registerResource(
     "send-message-widget",
