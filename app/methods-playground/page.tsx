@@ -23,9 +23,7 @@ const widgets: Widget[] = [
 
   // Meta Fields
   { id: "show_widget_description_demo", title: "widgetDescription", category: "Meta", path: "/widget-description-demo" },
-  { id: "show_widget_border_demo", title: "widgetPrefersBorder", category: "Meta", path: "/widget-border-demo" },
   { id: "show_widget_csp_demo", title: "widgetCSP", category: "Meta", path: "/widget-csp-demo" },
-  { id: "show_widget_domain_demo", title: "widgetDomain", category: "Meta", path: "/widget-domain-demo" },
 ];
 
 export default function MethodsPlayground() {
