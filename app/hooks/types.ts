@@ -67,8 +67,25 @@ export type RequestDisplayMode = (args: { mode: DisplayMode }) => Promise<{
   mode: DisplayMode;
 }>;
 
+export type ToolContent =
+  | {
+      type: "text";
+      text: string;
+    }
+  | {
+      /**
+       * Fallback shape covering future content types.
+       * Callers should feature-detect supported fields.
+       */
+      type: string;
+      [key: string]: unknown;
+    };
+
 export type CallToolResponse = {
-  result: string;
+  content?: ToolContent[];
+  structuredContent?: UnknownObject | null;
+  _meta?: UnknownObject | null;
+  [key: string]: unknown;
 };
 
 /** Calling APIs */
@@ -83,6 +100,12 @@ export class SetGlobalsEvent extends CustomEvent<{
   globals: Partial<OpenAIGlobals>;
 }> {
   readonly type = SET_GLOBALS_EVENT_TYPE;
+
+  constructor(globals: Partial<OpenAIGlobals>) {
+    super(SET_GLOBALS_EVENT_TYPE, {
+      detail: { globals },
+    });
+  }
 }
 
 /**
