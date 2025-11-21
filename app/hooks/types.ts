@@ -30,6 +30,8 @@ type API = {
 
   // Layout controls
   requestDisplayMode: RequestDisplayMode;
+
+  requestModal: RequestModal;
 };
 
 export type UnknownObject = Record<string, unknown>;
@@ -63,6 +65,11 @@ export type View = {
   params?: Record<string, unknown>;
 };
 export type DisplayMode = "pip" | "inline" | "fullscreen";
+export type RequestModal = (args: {
+  title: string;
+  params: Record<string, unknown>;
+  anchorElement?: HTMLElement | null;
+}) => Promise<void>;
 export type RequestDisplayMode = (args: { mode: DisplayMode }) => Promise<{
   /**
    * The granted display mode. The host may reject the request.
