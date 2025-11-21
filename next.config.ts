@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "frame-src 'self' https://apps-sdk-everything.vercel.app;"
+            value: "frame-src 'self' https://apps-sdk-everything.vercel.app; frame-ancestors *;"
           }
         ]
       }
