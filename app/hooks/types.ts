@@ -6,7 +6,7 @@ export type OpenAIGlobals<
 > = {
   // visuals
   theme: Theme;
-
+  view: View;
   userAgent: UserAgent;
   locale: string;
 
@@ -58,6 +58,10 @@ export type UserAgent = {
 };
 
 /** Display mode */
+export type View = {
+  mode?: "modal" | "inline";
+  params?: Record<string, unknown>;
+};
 export type DisplayMode = "pip" | "inline" | "fullscreen";
 export type RequestDisplayMode = (args: { mode: DisplayMode }) => Promise<{
   /**
