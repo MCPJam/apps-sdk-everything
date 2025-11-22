@@ -1,6 +1,17 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useOpenAIGlobal } from "@/app/hooks/use-openai-global";
 
 type Widget = {
   id: string;
@@ -27,6 +38,55 @@ const widgets: Widget[] = [
 ];
 
 export default function MethodsPlayground() {
+  const view = useOpenAIGlobal("view");
+  const isModalView = view?.mode === "modal";
+  const [clickCount, setClickCount] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleClick = () => {
+    setClickCount((prev) => prev + 1);
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 300);
+  };
+
+  if (isModalView) {
+    return (
+      <div className="w-full p-6">
+        <Card className="max-w-lg mx-auto">
+          <CardHeader>
+            <CardTitle>This is a Modal! 🎉</CardTitle>
+            <CardDescription>You're viewing this page in modal mode</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              This page was opened as a modal. You can interact with the content below!
+            </p>
+            <div className="flex flex-col gap-3">
+              <Button
+                onClick={handleClick}
+                className={`w-full ${isAnimating ? "scale-95" : "scale-100"} transition-transform`}
+              >
+                Click Me! ({clickCount})
+              </Button>
+              {clickCount > 0 && (
+                <div className="text-center text-sm text-muted-foreground">
+                  You've clicked {clickCount} time{clickCount !== 1 ? "s" : ""}!
+                </div>
+              )}
+              <Button
+                variant="outline"
+                onClick={() => setClickCount(0)}
+                disabled={clickCount === 0}
+              >
+                Reset Counter
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-8">
