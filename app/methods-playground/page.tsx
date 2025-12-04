@@ -31,6 +31,7 @@ const widgets: Widget[] = [
   { id: "demo_display_mode", title: "Change Display Mode", category: "Widget API", path: "/widgets/display-mode" },
   { id: "demo_widget_state", title: "Save Widget State", category: "Widget API", path: "/widgets/widget-state" },
   { id: "demo_modal", title: "Request Modal", category: "Widget API", path: "/widgets/modal" },
+  { id: "demo_popover", title: "Popover Component", category: "Widget API", path: "/widgets/popover" },
 
   // Widget Metadata
   { id: "show_widget_description_demo", title: "Widget Description", category: "Widget Metadata", path: "/widget-description-demo" },
