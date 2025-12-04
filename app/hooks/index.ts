@@ -3,6 +3,7 @@ export { useCallTool } from "./use-call-tool";
 export { useSendMessage } from "./use-send-message";
 export { useOpenExternal } from "./use-open-external";
 export { useRequestDisplayMode } from "./use-request-display-mode";
+export { useNotifyIntrinsicHeight } from "./use-notify-intrinsic-height";
 
 // OpenAI state hooks
 export { useDisplayMode } from "./use-display-mode";

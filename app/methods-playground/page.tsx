@@ -30,6 +30,7 @@ const widgets: Widget[] = [
   { id: "demo_open_external", title: "Open External Links", category: "Widget API", path: "/widgets/open-external" },
   { id: "demo_display_mode", title: "Change Display Mode", category: "Widget API", path: "/widgets/display-mode" },
   { id: "demo_widget_state", title: "Save Widget State", category: "Widget API", path: "/widgets/widget-state" },
+  { id: "demo_resize", title: "Resize Widget", category: "Widget API", path: "/widgets/resize" },
   { id: "demo_modal", title: "Request Modal", category: "Widget API", path: "/widgets/modal" },
   { id: "demo_popover", title: "Popover Component", category: "Widget API", path: "/widgets/popover" },
 

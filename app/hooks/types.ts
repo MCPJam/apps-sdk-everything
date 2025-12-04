@@ -30,6 +30,7 @@ type API = {
 
   // Layout controls
   requestDisplayMode: RequestDisplayMode;
+  notifyIntrinsicHeight: (height: number) => void;
 
   requestModal: RequestModal;
 };
